@@ -25,6 +25,9 @@ const main = async () => {
     community,
     signer.address
   );
+  if (!signerAccountAddress) {
+    throw new Error("Could not find an account for you!");
+  }
 
   console.log("Signer account address", signerAccountAddress);
 

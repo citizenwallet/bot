@@ -116,6 +116,10 @@ export const handleSendCommand = async (
     community,
     signer.address
   );
+  if (!signerAccountAddress) {
+    await interaction.reply("Could not find an account for you!");
+    return;
+  }
 
   const bundler = new BundlerService(community);
 
