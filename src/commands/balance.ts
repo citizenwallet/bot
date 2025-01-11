@@ -7,6 +7,7 @@ export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
   const alias = interaction.options.getString("token");
+  console.log("alias", alias);
   if (!alias) {
     await interaction.reply("You need to specify a token!");
     return;

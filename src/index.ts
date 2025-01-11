@@ -28,8 +28,6 @@ client.once(Events.ClientReady, (readyClient) => {
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  console.log(interaction);
-
   switch (interaction.commandName) {
     case "balance":
       await handleBalanceCommand(interaction);
@@ -59,9 +57,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
+  console.log("Citizen Wallet Discord Bot");
   res.send("Citizen Wallet Discord Bot");
 });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = app;
