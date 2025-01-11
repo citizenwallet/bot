@@ -5,3 +5,7 @@ export const cleanUserId = (userId: string) => {
 export const isDiscordMention = (userId: string) => {
   return /^<@\d+>$/.test(userId);
 };
+
+export const createDiscordMention = (userId: string) => {
+  return `<@${userId}>`;
+};

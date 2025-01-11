@@ -7,7 +7,12 @@ import { handleSendCommand } from "./commands/send.js";
 
 // Create a new client instance
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildMessages,
+  ],
 });
 
 // When the client is ready, run this code (only once)
@@ -29,7 +34,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await handleAddressCommand(interaction);
       break;
     case "send":
-      await handleSendCommand(interaction);
+      await handleSendCommand(client, interaction);
       break;
     case "ping":
       await handlePingCommand(interaction);

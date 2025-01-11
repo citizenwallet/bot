@@ -1,16 +1,18 @@
-import {
-  CommunityConfig,
-  getCardAddress,
-  getAccountBalance,
-} from "@citizenwallet/sdk";
+import { getCardAddress, getAccountBalance } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
-import GratitudeCommunity from "../cw/gratitude.community.json" assert { type: "json" };
 import { formatUnits, keccak256, toUtf8Bytes } from "ethers";
+import { getCommunity } from "../cw";
 
 export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
-  const community = new CommunityConfig(GratitudeCommunity);
+  const alias = interaction.options.getString("token");
+  if (!alias) {
+    await interaction.reply("You need to specify a token!");
+    return;
+  }
+
+  const community = getCommunity(alias);
 
   console.log(community.primaryRPCUrl);
 
@@ -31,5 +33,9 @@ export const handleBalanceCommand = async (
 
   const formattedBalance = formatUnits(balance, token.decimals);
 
-  await interaction.reply(`Balance: ${formattedBalance} ${token.symbol}`);
+  const explorer = community.explorer;
+
+  await interaction.reply(
+    `Balance: **${formattedBalance} ${token.symbol}** ([View on Explorer](${explorer.url}/token/${token.address}?a=${address}))`
+  );
 };

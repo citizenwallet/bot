@@ -1,23 +1,37 @@
 import {
-  callOnCard,
-  CommunityConfig,
+  BundlerService,
+  callOnCardCallData,
+  getAccountAddress,
   getAccountBalance,
   getCardAddress,
   getProfileFromAddress,
-  getProfileFromUsername,
   tokenTransferCallData,
+  tokenTransferEventTopic,
   type ProfileWithTokenId,
+  type UserOpData,
+  type UserOpExtraData,
 } from "@citizenwallet/sdk";
-import { ChatInputCommandInteraction } from "discord.js";
-import GratitudeCommunity from "../cw/gratitude.community.json" assert { type: "json" };
-import { JsonRpcProvider, keccak256, parseUnits, toUtf8Bytes } from "ethers";
-import { cleanUserId, isDiscordMention } from "../utils/address";
+import { ChatInputCommandInteraction, Client } from "discord.js";
+import { keccak256, parseUnits, toUtf8Bytes } from "ethers";
+import {
+  cleanUserId,
+  createDiscordMention,
+  isDiscordMention,
+} from "../utils/address";
 import { Wallet } from "ethers";
+import { getCommunity } from "../cw";
 
 export const handleSendCommand = async (
+  client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
   console.log(interaction);
+  const alias = interaction.options.getString("token");
+  if (!alias) {
+    await interaction.reply("You need to specify a token!");
+    return;
+  }
+
   const user = interaction.options.getString("user");
   if (!user) {
     await interaction.reply("You need to specify a user!");
@@ -30,7 +44,13 @@ export const handleSendCommand = async (
     return;
   }
 
-  const community = new CommunityConfig(GratitudeCommunity);
+  const message = interaction.options.getString("message");
+
+  const community = getCommunity(alias);
+
+  const token = community.primaryToken;
+
+  const formattedAmount = parseUnits(amount.toFixed(2), token.decimals);
 
   const senderHashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
@@ -42,13 +62,14 @@ export const handleSendCommand = async (
 
   const balance =
     (await getAccountBalance(community, senderAddress)) ?? BigInt(0);
-  if (!balance || balance === BigInt(0)) {
+  if (!balance || balance === BigInt(0) || balance < formattedAmount) {
     await interaction.reply(`Insufficient balance: ${balance}`);
     return;
   }
 
   let receiverAddress: string = user;
   let profile: ProfileWithTokenId | null = null;
+  let receiverUserId: string | null = null;
   if (isDiscordMention(user)) {
     receiverAddress = user.replace(/<|>/g, "");
 
@@ -70,6 +91,7 @@ export const handleSendCommand = async (
     }
 
     receiverAddress = receiverCardAddress;
+    receiverUserId = userId;
   } else {
     // Check if receiverAddress is a valid Ethereum address
     if (!/^0x[a-fA-F0-9]{40}$/.test(receiverAddress)) {
@@ -82,8 +104,6 @@ export const handleSendCommand = async (
     profile = await getProfileFromAddress(community, receiverAddress);
   }
 
-  const token = community.primaryToken;
-
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
     await interaction.reply("Private key is not set");
@@ -92,31 +112,76 @@ export const handleSendCommand = async (
 
   const signer = new Wallet(privateKey);
 
-  const provider = new JsonRpcProvider(process.env.RPC_URL);
+  const signerAccountAddress = await getAccountAddress(
+    community,
+    signer.address
+  );
 
-  const formattedAmount = parseUnits(amount.toFixed(2), token.decimals);
+  const bundler = new BundlerService(community);
 
-  const calldata = tokenTransferCallData(receiverAddress, formattedAmount);
+  const transferCalldata = tokenTransferCallData(
+    receiverAddress,
+    formattedAmount
+  );
 
-  const tx = await callOnCard(
-    signer,
+  const calldata = callOnCardCallData(
     community,
     senderHashedUserId,
     token.address,
     BigInt(0),
-    calldata,
-    provider
+    transferCalldata
   );
-  if (!tx) {
-    await interaction.reply("Transaction failed");
-    return;
+
+  const cardConfig = community.primarySafeCardConfig;
+
+  const userOpData: UserOpData = {
+    topic: tokenTransferEventTopic,
+    from: senderAddress,
+    to: receiverAddress,
+    value: formattedAmount.toString(),
+  };
+
+  let extraData: UserOpExtraData | undefined;
+  if (message) {
+    extraData = {
+      description: message,
+    };
   }
 
-  console.log(tx);
+  const hash = await bundler.call(
+    signer,
+    cardConfig.address,
+    signerAccountAddress,
+    calldata,
+    userOpData,
+    extraData
+  );
+
+  const explorer = community.explorer;
+
+  if (receiverUserId) {
+    try {
+      const receiver = await client.users.fetch(receiverUserId);
+
+      const dmChannel = await receiver.createDM();
+
+      await dmChannel.send(
+        `**${amount} ${token.symbol}** received from ${createDiscordMention(
+          interaction.user.id
+        )} ([View Transaction](${explorer.url}/tx/${hash}))`
+      );
+
+      if (message) {
+        await dmChannel.send(`*${message}*`);
+      }
+    } catch (error) {
+      console.error("Failed to send message to receiver", error);
+    }
+  }
 
   return interaction.reply(
-    `Sent ${amount} ${token.symbol} to ${
+    `Sent **${amount} ${token.symbol}** to ${
       profile?.name ?? profile?.username ?? user
-    } 🚀`
+    } 🚀 ([View Transaction](${explorer.url}/tx/${hash}))`
   );
 };

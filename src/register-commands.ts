@@ -1,5 +1,8 @@
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
+import { getCommunityChoices } from "./cw";
+
+const choices = getCommunityChoices();
 
 const commands = [
   {
@@ -9,18 +12,43 @@ const commands = [
   {
     name: "balance",
     description: "Replies with your balance!",
+    options: [
+      {
+        name: "token",
+        description: "The token to check",
+        type: 3, // STRING type
+        required: true,
+        choices,
+      },
+    ],
   },
   {
     name: "address",
     description: "Replies with your address!",
+    options: [
+      {
+        name: "token",
+        description: "The token to check",
+        type: 3, // STRING type
+        required: true,
+        choices,
+      },
+    ],
   },
   {
     name: "send",
     description: "Send a token to someone!",
     options: [
       {
+        name: "token",
+        description: "The token to send",
+        type: 3, // STRING type
+        required: true,
+        choices,
+      },
+      {
         name: "user",
-        description: "The recipient's @username",
+        description: "The recipient's @username or 0x address",
         type: 3, // STRING type
         required: true,
       },
@@ -28,6 +56,12 @@ const commands = [
         name: "amount",
         description: "The amount to send",
         type: 10, // NUMBER type
+        required: true,
+      },
+      {
+        name: "message",
+        description: "The message to send",
+        type: 3, // STRING type
         required: true,
       },
     ],

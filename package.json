@@ -8,13 +8,16 @@
         "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts",
         "build": "tsc",
-        "register": "tsx src/register-commands.ts"
+        "register-commands": "tsx src/register-commands.ts",
+        "register-bot": "tsx src/register-bot-account.ts",
+        "postinstall": "npm run register-commands"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.48",
+        "@citizenwallet/sdk": "file:../engine-js-sdk",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
-        "ethers": "^6.13.5"
+        "ethers": "^6.13.5",
+        "sharp": "^0.33.5"
     },
     "devDependencies": {
         "@types/node": "^20.11.24",

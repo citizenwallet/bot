@@ -1,12 +1,18 @@
-import { CommunityConfig, getCardAddress } from "@citizenwallet/sdk";
+import { getCardAddress } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
-import GratitudeCommunity from "../cw/gratitude.community.json" assert { type: "json" };
 import { keccak256, toUtf8Bytes } from "ethers";
+import { getCommunity } from "../cw";
 
 export const handleAddressCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
-  const community = new CommunityConfig(GratitudeCommunity);
+  const alias = interaction.options.getString("token");
+  if (!alias) {
+    await interaction.reply("You need to specify a token!");
+    return;
+  }
+
+  const community = getCommunity(alias);
 
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
@@ -17,5 +23,9 @@ export const handleAddressCommand = async (
     return;
   }
 
-  return interaction.reply(`Your address: ${address}`);
+  const explorer = community.explorer;
+
+  return interaction.reply(
+    `Your address: ${address} ([View on Explorer](${explorer.url}/address/${address}))`
+  );
 };
