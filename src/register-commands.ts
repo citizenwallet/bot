@@ -74,14 +74,18 @@ const clientId = process.env.CLIENT_ID;
 if (!token) throw new Error("DISCORD_TOKEN is not defined in .env file");
 if (!clientId) throw new Error("CLIENT_ID is not defined in .env file");
 
-const rest = new REST({ version: "10" }).setToken(token);
+export const registerCommands = async () => {
+  const rest = new REST({ version: "10" }).setToken(token);
 
-try {
-  console.log("Started refreshing application (/) commands.");
+  try {
+    console.log("Started refreshing application (/) commands.");
 
-  await rest.put(Routes.applicationCommands(clientId), { body: commands });
+    await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
-  console.log("Successfully reloaded application (/) commands.");
-} catch (error) {
-  console.error(error);
-}
+    console.log("Successfully reloaded application (/) commands.");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+registerCommands();

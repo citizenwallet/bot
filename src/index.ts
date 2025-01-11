@@ -1,9 +1,11 @@
+import express from "express";
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import "dotenv/config";
 import { handleBalanceCommand } from "./commands/balance.js";
 import { handlePingCommand } from "./commands/ping.js";
 import { handleAddressCommand } from "./commands/address.js";
 import { handleSendCommand } from "./commands/send.js";
+import { registerCommands } from "./register-commands.js";
 
 // Create a new client instance
 const client = new Client({
@@ -18,6 +20,8 @@ const client = new Client({
 // When the client is ready, run this code (only once)
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+
+  registerCommands();
 });
 
 // Handle slash commands
@@ -50,3 +54,14 @@ const token = process.env.DISCORD_TOKEN;
 if (!token) throw new Error("DISCORD_TOKEN is not defined in .env file");
 
 client.login(token);
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("Citizen Wallet Discord Bot");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
