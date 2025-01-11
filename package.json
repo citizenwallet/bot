@@ -2,10 +2,11 @@
     "name": "discord-bot",
     "version": "1.0.0",
     "description": "A Discord bot powered by discord.js",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
-        "start": "tsx src/index.ts",
+        "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts",
+        "build": "rimraf dist && tsc && cp communities.json dist",
         "register-commands": "tsx src/register-commands.ts",
         "register-bot": "tsx src/register-bot-account.ts"
     },

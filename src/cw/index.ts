@@ -2,7 +2,7 @@ import { CommunityConfig, type Config } from "@citizenwallet/sdk";
 import { readFileSync } from "fs";
 
 export const getCommunity = (alias: string): CommunityConfig => {
-  const data = readFileSync("src/cw/communities.json", "utf8");
+  const data = readFileSync("./communities.json", "utf8");
 
   const parsed: Config[] = JSON.parse(data);
 
@@ -14,7 +14,7 @@ export const getCommunity = (alias: string): CommunityConfig => {
 };
 
 export const getCommunityChoices = (): { name: string; value: string }[] => {
-  const data = readFileSync("src/cw/communities.json", "utf8");
+  const data = readFileSync("./communities.json", "utf8");
   const parsed: Config[] = JSON.parse(data);
   return parsed.map((c) => ({
     name: c.community.name,
