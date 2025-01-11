@@ -3,10 +3,7 @@
     "builds": [
         {
             "src": "src/index.ts",
-            "use": "@now/node",
-            "config": {
-                "maxLambdaSize": "15mb"
-            }
+            "use": "@vercel/node"
         }
     ],
     "routes": [
