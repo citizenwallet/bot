@@ -7,7 +7,7 @@
     "scripts": {
         "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts",
-        "build": "rimraf dist && tsc && cp communities.json dist",
+        "build": "rimraf dist && tsc",
         "register-commands": "tsx src/register-commands.ts",
         "register-bot": "tsx src/register-bot-account.ts"
     },

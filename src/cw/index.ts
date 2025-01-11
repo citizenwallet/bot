@@ -1,12 +1,10 @@
 import { CommunityConfig, type Config } from "@citizenwallet/sdk";
-import { readFileSync } from "fs";
+import communities from "./communities.json";
 
 export const getCommunity = (alias: string): CommunityConfig => {
-  const data = readFileSync("./communities.json", "utf8");
-
-  const parsed: Config[] = JSON.parse(data);
-
-  const community = parsed.find((c) => c.community.alias === alias);
+  const community = communities.find(
+    (c: Config) => c.community.alias === alias
+  );
 
   if (!community) throw new Error(`Community ${alias} not found`);
 
@@ -14,9 +12,7 @@ export const getCommunity = (alias: string): CommunityConfig => {
 };
 
 export const getCommunityChoices = (): { name: string; value: string }[] => {
-  const data = readFileSync("./communities.json", "utf8");
-  const parsed: Config[] = JSON.parse(data);
-  return parsed.map((c) => ({
+  return communities.map((c: Config) => ({
     name: c.community.name,
     value: c.community.alias,
   }));
