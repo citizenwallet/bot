@@ -13,7 +13,7 @@
         "postinstall": "npm run register-commands"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "file:../engine-js-sdk",
+        "@citizenwallet/sdk": "^2.0.51",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",
