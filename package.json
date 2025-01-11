@@ -5,9 +5,7 @@
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
-        "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
         "register-commands": "tsx src/register-commands.ts",
         "register-bot": "tsx src/register-bot-account.ts"
     },
