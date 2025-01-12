@@ -20,8 +20,6 @@ const client = new Client({
 // When the client is ready, run this code (only once)
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-
-  registerCommands();
 });
 
 // Handle slash commands
