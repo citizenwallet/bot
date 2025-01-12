@@ -7,7 +7,6 @@ export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
   const alias = interaction.options.getString("token");
-  console.log("alias", alias);
   if (!alias) {
     await interaction.reply("You need to specify a token!");
     return;
@@ -15,11 +14,7 @@ export const handleBalanceCommand = async (
 
   const community = getCommunity(alias);
 
-  console.log(community.primaryRPCUrl);
-
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
-
-  console.log(hashedUserId);
 
   const address = await getCardAddress(community, hashedUserId);
 
