@@ -12,7 +12,7 @@ import {
   type UserOpExtraData,
 } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction, Client } from "discord.js";
-import { keccak256, parseUnits, toUtf8Bytes } from "ethers";
+import { formatUnits, keccak256, parseUnits, toUtf8Bytes } from "ethers";
 import {
   cleanUserId,
   createDiscordMention,
@@ -62,8 +62,20 @@ export const handleSendCommand = async (
 
   const balance =
     (await getAccountBalance(community, senderAddress)) ?? BigInt(0);
-  if (!balance || balance === BigInt(0) || balance < formattedAmount) {
-    await interaction.reply(`Insufficient balance: ${balance}`);
+  if (!balance || balance === BigInt(0)) {
+    await interaction.reply({
+      content: `Insufficient balance: ${balance}`,
+      ephemeral: true,
+    });
+    return;
+  }
+
+  if (balance < formattedAmount) {
+    const formattedBalance = formatUnits(balance, token.decimals);
+    await interaction.reply({
+      content: `Insufficient balance: ${formattedBalance}`,
+      ephemeral: true,
+    });
     return;
   }
 
@@ -75,7 +87,10 @@ export const handleSendCommand = async (
 
     const userId = cleanUserId(user);
     if (!userId) {
-      await interaction.reply("Invalid user id");
+      await interaction.reply({
+        content: "Invalid user id",
+        ephemeral: true,
+      });
       return;
     }
 
@@ -86,7 +101,10 @@ export const handleSendCommand = async (
       receiverHashedUserId
     );
     if (!receiverCardAddress) {
-      await interaction.reply("Could not find an account to send to!");
+      await interaction.reply({
+        content: "Could not find an account to send to!",
+        ephemeral: true,
+      });
       return;
     }
 
@@ -95,9 +113,11 @@ export const handleSendCommand = async (
   } else {
     // Check if receiverAddress is a valid Ethereum address
     if (!/^0x[a-fA-F0-9]{40}$/.test(receiverAddress)) {
-      await interaction.reply(
-        "Invalid format: it's either a discord mention or an Ethereum address"
-      );
+      await interaction.reply({
+        content:
+          "Invalid format: it's either a discord mention or an Ethereum address",
+        ephemeral: true,
+      });
       return;
     }
 
@@ -106,7 +126,10 @@ export const handleSendCommand = async (
 
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
-    await interaction.reply("Private key is not set");
+    await interaction.reply({
+      content: "Private key is not set",
+      ephemeral: true,
+    });
     return;
   }
 
@@ -117,7 +140,10 @@ export const handleSendCommand = async (
     signer.address
   );
   if (!signerAccountAddress) {
-    await interaction.reply("Could not find an account for you!");
+    await interaction.reply({
+      content: "Could not find an account for you!",
+      ephemeral: true,
+    });
     return;
   }
 
@@ -183,9 +209,10 @@ export const handleSendCommand = async (
     }
   }
 
-  return interaction.reply(
-    `Sent **${amount} ${token.symbol}** to ${
+  return interaction.reply({
+    content: `Sent **${amount} ${token.symbol}** to ${
       profile?.name ?? profile?.username ?? user
-    } 🚀 ([View Transaction](${explorer.url}/tx/${hash}))`
-  );
+    } 🚀 ([View Transaction](${explorer.url}/tx/${hash}))`,
+    ephemeral: true,
+  });
 };

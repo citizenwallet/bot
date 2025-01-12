@@ -8,7 +8,10 @@ export const handleAddressCommand = async (
 ) => {
   const alias = interaction.options.getString("token");
   if (!alias) {
-    await interaction.reply("You need to specify a token!");
+    await interaction.reply({
+      content: "You need to specify a token!",
+      ephemeral: true,
+    });
     return;
   }
 
@@ -19,13 +22,17 @@ export const handleAddressCommand = async (
   const address = await getCardAddress(community, hashedUserId);
 
   if (!address) {
-    await interaction.reply("You don't have an account yet!");
+    await interaction.reply({
+      content: "You don't have an account yet!",
+      ephemeral: true,
+    });
     return;
   }
 
   const explorer = community.explorer;
 
-  return interaction.reply(
-    `Your address: ${address} ([View on Explorer](${explorer.url}/address/${address}))`
-  );
+  return interaction.reply({
+    content: `Your address: ${address} ([View on Explorer](${explorer.url}/address/${address}))`,
+    ephemeral: true,
+  });
 };
