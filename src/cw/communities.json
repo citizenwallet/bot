@@ -163,5 +163,81 @@
         ],
         "config_location": "https://wallet.pay.brussels/config/community.json",
         "version": 4
+    },
+    {
+        "community": {
+            "name": "EURe on Gnosis",
+            "description": "A community for EURe on Gnosis",
+            "url": "https://monerium.com/",
+            "alias": "eure.gnosis",
+            "logo": "https://eure.gnosis.citizenwallet.xyz/wallet-config/_images/eure.svg",
+            "custom_domain": "eure.gnosis.citizenwallet.xyz",
+            "hidden": false,
+            "theme": {
+                "primary": "#4a90e2"
+            },
+            "profile": {
+                "address": "0x2e297B9ef4df73c8da5070E91EF0570FA312A698",
+                "chain_id": 100
+            },
+            "primary_token": {
+                "address": "0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430",
+                "chain_id": 100
+            },
+            "primary_account_factory": {
+                "address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
+                "chain_id": 100
+            },
+            "primary_card_manager": {
+                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "chain_id": 100
+            }
+        },
+        "tokens": {
+            "100:0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430": {
+                "standard": "erc20",
+                "name": "EURe [Gnosis]",
+                "address": "0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430",
+                "symbol": "EURe",
+                "decimals": 18,
+                "chain_id": 100
+            }
+        },
+        "scan": {
+            "url": "https://gnosisscan.io",
+            "name": "Gnosis Explorer"
+        },
+        "accounts": {
+            "100:0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2": {
+                "chain_id": 100,
+                "entrypoint_address": "0x7079253c0358eF9Fd87E16488299Ef6e06F403B6",
+                "paymaster_address": "0x87aBB367A78fa57360AAACf8dA9Bb533cFFb7ed3",
+                "account_factory_address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
+                "paymaster_type": "cw-safe"
+            }
+        },
+        "cards": {
+            "100:0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4": {
+                "chain_id": 100,
+                "instance_id": "cw-discord-eure",
+                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "type": "safe"
+            }
+        },
+        "chains": {
+            "100": {
+                "id": 100,
+                "node": {
+                    "url": "https://100.engine.citizenwallet.xyz",
+                    "ws_url": "wss://100.engine.citizenwallet.xyz"
+                }
+            }
+        },
+        "ipfs": {
+            "url": "https://ipfs.internal.citizenwallet.xyz"
+        },
+        "plugins": [],
+        "config_location": "https://eure.gnosis.citizenwallet.xyz/config/community.json",
+        "version": 4
     }
 ]
