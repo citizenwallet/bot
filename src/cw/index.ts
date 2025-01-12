@@ -11,6 +11,10 @@ export const getCommunity = (alias: string): CommunityConfig => {
   return new CommunityConfig(community);
 };
 
+export const getCommunities = (): CommunityConfig[] => {
+  return communities.map((c: Config) => new CommunityConfig(c));
+};
+
 export const getCommunityChoices = (): { name: string; value: string }[] => {
   return communities.map((c: Config) => ({
     name: c.community.name,

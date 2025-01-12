@@ -1,11 +1,7 @@
-import { CommunityConfig } from "@citizenwallet/sdk";
+import { CommunityConfig, updateWhitelistCallData } from "@citizenwallet/sdk";
 import { Wallet } from "ethers";
 import { getCommunities } from "./cw";
-import {
-  BundlerService,
-  createInstanceCallData,
-  getAccountAddress,
-} from "@citizenwallet/sdk";
+import { BundlerService, getAccountAddress } from "@citizenwallet/sdk";
 
 interface CommunityWithWhitelist {
   community: CommunityConfig;
@@ -49,7 +45,7 @@ const main = async () => {
   }
 
   const signer = new Wallet(privateKey);
-  console.log("creating,", Object.values(cardManagerMap).length, "instances");
+  console.log("updating,", Object.values(cardManagerMap).length, "instances");
   for (const communityMap of Object.values(cardManagerMap)) {
     const signerAccountAddress = await getAccountAddress(
       communityMap.community,
@@ -59,7 +55,7 @@ const main = async () => {
       throw new Error("Could not find an account for you!");
     }
 
-    const calldata = createInstanceCallData(
+    const calldata = updateWhitelistCallData(
       communityMap.community,
       communityMap.whitelist
     );
@@ -79,7 +75,7 @@ const main = async () => {
 
     await bundler.awaitSuccess(hash);
 
-    console.log("Instance created");
+    console.log("Instance updated");
   }
 };
 
