@@ -174,40 +174,47 @@ export const handleSendCommand = async (
     };
   }
 
-  const hash = await bundler.call(
-    signer,
-    cardConfig.address,
-    signerAccountAddress,
-    calldata,
-    userOpData,
-    extraData
-  );
+  try {
+    const hash = await bundler.call(
+      signer,
+      cardConfig.address,
+      signerAccountAddress,
+      calldata,
+      userOpData,
+      extraData
+    );
 
-  const explorer = community.explorer;
+    const explorer = community.explorer;
 
-  if (receiverUserId) {
-    try {
-      const receiver = await client.users.fetch(receiverUserId);
+    if (receiverUserId) {
+      try {
+        const receiver = await client.users.fetch(receiverUserId);
 
-      const dmChannel = await receiver.createDM();
+        const dmChannel = await receiver.createDM();
 
-      await dmChannel.send(
-        `**${amount} ${token.symbol}** received from ${createDiscordMention(
-          interaction.user.id
-        )} ([View Transaction](${explorer.url}/tx/${hash}))`
-      );
+        await dmChannel.send(
+          `**${amount} ${token.symbol}** received from ${createDiscordMention(
+            interaction.user.id
+          )} ([View Transaction](${explorer.url}/tx/${hash}))`
+        );
 
-      if (message) {
-        await dmChannel.send(`*${message}*`);
+        if (message) {
+          await dmChannel.send(`*${message}*`);
+        }
+      } catch (error) {
+        console.error("Failed to send message to receiver", error);
       }
-    } catch (error) {
-      console.error("Failed to send message to receiver", error);
     }
-  }
 
-  return interaction.editReply({
-    content: `✅ Sent **${amount} ${token.symbol}** to ${
-      profile?.name ?? profile?.username ?? user
-    } ([View Transaction](${explorer.url}/tx/${hash}))`,
-  });
+    return interaction.editReply({
+      content: `✅ Sent **${amount} ${token.symbol}** to ${
+        profile?.name ?? profile?.username ?? user
+      } ([View Transaction](${explorer.url}/tx/${hash}))`,
+    });
+  } catch (error) {
+    console.error("Failed to send transaction", error);
+    await interaction.editReply({
+      content: "❌ Failed to send transaction",
+    });
+  }
 };
