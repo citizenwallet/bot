@@ -23,7 +23,7 @@
                 "chain_id": 42220
             },
             "primary_card_manager": {
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "chain_id": 42220
             }
         },
@@ -51,10 +51,10 @@
             }
         },
         "cards": {
-            "42220:0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4": {
+            "42220:0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28": {
                 "chain_id": 42220,
                 "instance_id": "cw-discord-1",
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "type": "safe"
             }
         },
@@ -106,7 +106,7 @@
                 "chain_id": 100
             },
             "primary_card_manager": {
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "chain_id": 100
             }
         },
@@ -128,16 +128,16 @@
             "100:0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2": {
                 "chain_id": 100,
                 "entrypoint_address": "0x7079253c0358eF9Fd87E16488299Ef6e06F403B6",
-                "paymaster_address": "0xCfc0d24E1371372eE0227117434c71b47FD694Bc",
+                "paymaster_address": "0xE69C843898E21C0E95eA7DD310cD850AAc0aB897",
                 "account_factory_address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
                 "paymaster_type": "cw-safe"
             }
         },
         "cards": {
-            "100:0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4": {
+            "100:0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28": {
                 "chain_id": 100,
                 "instance_id": "cw-discord-1",
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "type": "safe"
             }
         },
@@ -189,7 +189,7 @@
                 "chain_id": 100
             },
             "primary_card_manager": {
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "chain_id": 100
             }
         },
@@ -211,16 +211,16 @@
             "100:0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2": {
                 "chain_id": 100,
                 "entrypoint_address": "0x7079253c0358eF9Fd87E16488299Ef6e06F403B6",
-                "paymaster_address": "0x87aBB367A78fa57360AAACf8dA9Bb533cFFb7ed3",
+                "paymaster_address": "0xeBDd6ee8DB7055f62D14A5eAAB7c18ae36Cd2216",
                 "account_factory_address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
                 "paymaster_type": "cw-safe"
             }
         },
         "cards": {
-            "100:0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4": {
+            "100:0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28": {
                 "chain_id": 100,
                 "instance_id": "cw-discord-1",
-                "address": "0x1CB21E891e4A011cB6C67F77aF264c3B882b7AC4",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
                 "type": "safe"
             }
         },
