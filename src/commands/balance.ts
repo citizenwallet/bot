@@ -6,11 +6,12 @@ import { getCommunity } from "../cw";
 export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
+  await interaction.reply({ content: "⚙️ Fetching...", ephemeral: true });
+
   const alias = interaction.options.getString("token");
   if (!alias) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "You need to specify a token!",
-      ephemeral: true,
     });
     return;
   }
@@ -22,10 +23,7 @@ export const handleBalanceCommand = async (
   const address = await getCardAddress(community, hashedUserId);
 
   if (!address) {
-    await interaction.reply({
-      content: "You don't have an account yet!",
-      ephemeral: true,
-    });
+    await interaction.editReply("You don't have an account yet!");
     return;
   }
 
@@ -37,8 +35,7 @@ export const handleBalanceCommand = async (
 
   const explorer = community.explorer;
 
-  await interaction.reply({
-    content: `Balance: **${formattedBalance} ${token.symbol}** ([View on Explorer](${explorer.url}/token/${token.address}?a=${address}))`,
-    ephemeral: true,
+  await interaction.editReply({
+    content: `✅ Balance: **${formattedBalance} ${token.symbol}** ([View on Explorer](${explorer.url}/token/${token.address}?a=${address}))`,
   });
 };

@@ -25,22 +25,23 @@ export const handleSendCommand = async (
   client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
-  console.log(interaction);
+  await interaction.reply({ content: "⚙️ Sending...", ephemeral: true });
+
   const alias = interaction.options.getString("token");
   if (!alias) {
-    await interaction.reply("You need to specify a token!");
+    await interaction.editReply("You need to specify a token!");
     return;
   }
 
   const user = interaction.options.getString("user");
   if (!user) {
-    await interaction.reply("You need to specify a user!");
+    await interaction.editReply("You need to specify a user!");
     return;
   }
 
   const amount = interaction.options.getNumber("amount");
   if (!amount) {
-    await interaction.reply("You need to specify an amount!");
+    await interaction.editReply("You need to specify an amount!");
     return;
   }
 
@@ -56,9 +57,8 @@ export const handleSendCommand = async (
 
   const senderAddress = await getCardAddress(community, senderHashedUserId);
   if (!senderAddress) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "Could not find an account for you!",
-      ephemeral: true,
     });
     return;
   }
@@ -66,18 +66,16 @@ export const handleSendCommand = async (
   const balance =
     (await getAccountBalance(community, senderAddress)) ?? BigInt(0);
   if (!balance || balance === BigInt(0)) {
-    await interaction.reply({
+    await interaction.editReply({
       content: `Insufficient balance: ${balance}`,
-      ephemeral: true,
     });
     return;
   }
 
   if (balance < formattedAmount) {
     const formattedBalance = formatUnits(balance, token.decimals);
-    await interaction.reply({
+    await interaction.editReply({
       content: `Insufficient balance: ${formattedBalance}`,
-      ephemeral: true,
     });
     return;
   }
@@ -90,9 +88,8 @@ export const handleSendCommand = async (
 
     const userId = cleanUserId(user);
     if (!userId) {
-      await interaction.reply({
+      await interaction.editReply({
         content: "Invalid user id",
-        ephemeral: true,
       });
       return;
     }
@@ -104,9 +101,8 @@ export const handleSendCommand = async (
       receiverHashedUserId
     );
     if (!receiverCardAddress) {
-      await interaction.reply({
+      await interaction.editReply({
         content: "Could not find an account to send to!",
-        ephemeral: true,
       });
       return;
     }
@@ -116,10 +112,9 @@ export const handleSendCommand = async (
   } else {
     // Check if receiverAddress is a valid Ethereum address
     if (!/^0x[a-fA-F0-9]{40}$/.test(receiverAddress)) {
-      await interaction.reply({
+      await interaction.editReply({
         content:
           "Invalid format: it's either a discord mention or an Ethereum address",
-        ephemeral: true,
       });
       return;
     }
@@ -129,9 +124,8 @@ export const handleSendCommand = async (
 
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "Private key is not set",
-      ephemeral: true,
     });
     return;
   }
@@ -143,9 +137,8 @@ export const handleSendCommand = async (
     signer.address
   );
   if (!signerAccountAddress) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "Could not find an account for you!",
-      ephemeral: true,
     });
     return;
   }
@@ -212,10 +205,9 @@ export const handleSendCommand = async (
     }
   }
 
-  return interaction.reply({
-    content: `Sent **${amount} ${token.symbol}** to ${
+  return interaction.editReply({
+    content: `✅ Sent **${amount} ${token.symbol}** to ${
       profile?.name ?? profile?.username ?? user
-    } 🚀 ([View Transaction](${explorer.url}/tx/${hash}))`,
-    ephemeral: true,
+    } ([View Transaction](${explorer.url}/tx/${hash}))`,
   });
 };
