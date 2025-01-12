@@ -7,9 +7,9 @@ import {
   getAccountAddress,
 } from "@citizenwallet/sdk";
 
-interface CommunityWithWhitelist {
+interface CommunityWithContracts {
   community: CommunityConfig;
-  whitelist: string[];
+  contracts: string[];
 }
 
 const main = async () => {
@@ -22,7 +22,7 @@ const main = async () => {
 
   console.log("parsing", communities.length, "communities");
 
-  const cardManagerMap: Record<string, CommunityWithWhitelist> = {};
+  const cardManagerMap: Record<string, CommunityWithContracts> = {};
   for (const community of communities) {
     const cardConfig = community.primarySafeCardConfig;
     if (!cardConfig) continue;
@@ -30,20 +30,20 @@ const main = async () => {
     const instance = `${cardConfig.chain_id}:${cardConfig.address}:${cardConfig.instance_id}`;
 
     if (!cardManagerMap[instance]) {
-      const whitelist: string[] = [];
+      const contracts: string[] = [];
 
-      whitelist.push(community.primaryToken.address);
-      whitelist.push(community.community.profile.address);
+      contracts.push(community.primaryToken.address);
+      contracts.push(community.community.profile.address);
 
       cardManagerMap[instance] = {
         community,
-        whitelist,
+        contracts,
       };
       continue;
     }
 
-    cardManagerMap[instance].whitelist.push(community.primaryToken.address);
-    cardManagerMap[instance].whitelist.push(
+    cardManagerMap[instance].contracts.push(community.primaryToken.address);
+    cardManagerMap[instance].contracts.push(
       community.community.profile.address
     );
   }
@@ -61,7 +61,7 @@ const main = async () => {
 
     const calldata = createInstanceCallData(
       communityMap.community,
-      communityMap.whitelist
+      communityMap.contracts
     );
 
     const bundler = new BundlerService(communityMap.community);

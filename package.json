@@ -13,7 +13,7 @@
         "update-bot": "tsx src/update-bot-account.ts"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.52",
+        "@citizenwallet/sdk": "^2.0.53",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",
