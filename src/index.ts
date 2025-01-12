@@ -28,6 +28,8 @@ client.once(Events.ClientReady, (readyClient) => {
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
+  if (interaction.replied) return;
+
   switch (interaction.commandName) {
     case "balance":
       await handleBalanceCommand(interaction);

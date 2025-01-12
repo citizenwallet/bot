@@ -56,7 +56,10 @@ export const handleSendCommand = async (
 
   const senderAddress = await getCardAddress(community, senderHashedUserId);
   if (!senderAddress) {
-    await interaction.reply("Could not find an account for you!");
+    await interaction.reply({
+      content: "Could not find an account for you!",
+      ephemeral: true,
+    });
     return;
   }
 
