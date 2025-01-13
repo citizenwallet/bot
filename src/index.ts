@@ -6,6 +6,8 @@ import { handlePingCommand } from "./commands/ping.js";
 import { handleAddressCommand } from "./commands/address.js";
 import { handleSendCommand } from "./commands/send.js";
 import { registerCommands } from "./register-commands.js";
+import { handleMintCommand } from "./commands/mint.js";
+import { handleBurnCommand } from "./commands/burn.js";
 
 // Create a new client instance
 const client = new Client({
@@ -20,6 +22,8 @@ const client = new Client({
 // When the client is ready, run this code (only once)
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+
+  registerCommands();
 });
 
 // Handle slash commands
@@ -37,6 +41,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
       break;
     case "send":
       await handleSendCommand(client, interaction);
+      break;
+    case "mint":
+      await handleMintCommand(client, interaction);
+      break;
+    case "burn":
+      await handleBurnCommand(client, interaction);
       break;
     case "ping":
       await handlePingCommand(interaction);

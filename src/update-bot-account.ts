@@ -12,7 +12,13 @@ interface CommunityWithContracts {
 }
 
 const main = async () => {
-  const communities = getCommunities();
+  const chainId = parseInt(process.argv[2] || "0");
+
+  const communities = chainId
+    ? getCommunities().filter(
+        (c) => c.primarySafeCardConfig?.chain_id === chainId
+      )
+    : getCommunities();
 
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
@@ -31,14 +37,10 @@ const main = async () => {
     if (!cardManagerMap[instance]) {
       const contracts: string[] = [];
 
-      contracts.push(community.primaryToken.address);
-      contracts.push(community.community.profile.address);
-
       cardManagerMap[instance] = {
         community,
         contracts,
       };
-      continue;
     }
 
     cardManagerMap[instance].contracts.push(community.primaryToken.address);
@@ -46,6 +48,8 @@ const main = async () => {
       community.community.profile.address
     );
   }
+
+  console.log(cardManagerMap);
 
   const signer = new Wallet(privateKey);
   console.log("updating,", Object.values(cardManagerMap).length, "instances");

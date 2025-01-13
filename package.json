@@ -10,10 +10,11 @@
         "build": "rimraf dist && tsc",
         "register-commands": "tsx src/register-commands.ts",
         "register-bot": "tsx src/register-bot-account.ts",
-        "update-bot": "tsx src/update-bot-account.ts"
+        "update-bot": "tsx src/update-bot-account.ts",
+        "bot-address": "tsx src/bot-address.ts"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.53",
+        "@citizenwallet/sdk": "^2.0.54",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",

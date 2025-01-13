@@ -37,7 +37,7 @@ const commands = [
   },
   {
     name: "send",
-    description: "Send a token to someone!",
+    description: "Send a token to someone! 🚀",
     options: [
       {
         name: "token",
@@ -61,6 +61,70 @@ const commands = [
       {
         name: "message",
         description: "The message to send",
+        type: 3, // STRING type
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "mint",
+    description: "Mint a token for someone! 🔨",
+    default_member_permissions: "32",
+    options: [
+      {
+        name: "token",
+        description: "The token to mint",
+        type: 3, // STRING type
+        required: true,
+        choices,
+      },
+      {
+        name: "user",
+        description: "The recipient's @username or 0x address",
+        type: 3, // STRING type
+        required: true,
+      },
+      {
+        name: "amount",
+        description: "The amount to mint",
+        type: 10, // NUMBER type
+        required: true,
+      },
+      {
+        name: "message",
+        description: "The message to include",
+        type: 3, // STRING type
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "burn",
+    description: "Burn a token from someone! 🔥",
+    default_member_permissions: "32",
+    options: [
+      {
+        name: "token",
+        description: "The token to burn",
+        type: 3, // STRING type
+        required: true,
+        choices,
+      },
+      {
+        name: "user",
+        description: "The recipient's @username or 0x address",
+        type: 3, // STRING type
+        required: true,
+      },
+      {
+        name: "amount",
+        description: "The amount to burn",
+        type: 10, // NUMBER type
+        required: true,
+      },
+      {
+        name: "message",
+        description: "The message to include",
         type: 3, // STRING type
         required: true,
       },
