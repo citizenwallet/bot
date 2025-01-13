@@ -153,8 +153,6 @@ export const registerCommands = async () => {
     const choices = getCommunityChoices();
     const minterChoices = await getCommunitiesWithMinterRole();
 
-    console.log(minterChoices);
-
     const commands = getCommands(choices, minterChoices);
 
     await rest.put(Routes.applicationCommands(clientId), { body: commands });
