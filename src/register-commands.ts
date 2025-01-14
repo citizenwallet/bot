@@ -131,6 +131,19 @@ const getCommands = (
         },
       ],
     },
+    {
+      name: "add-owner",
+      description: "Add an owner to your Safe! 🔑",
+      options: [
+        {
+          name: "owner",
+          description:
+            "The owner's 0x address (needs to be a valid ethereum address)",
+          type: 3, // STRING type
+          required: true,
+        },
+      ],
+    },
   ] as const;
 
 const token = process.env.DISCORD_TOKEN;

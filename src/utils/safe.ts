@@ -1,6 +1,10 @@
 import { CommunityConfig } from "@citizenwallet/sdk";
 import { ChainToEip155ChainPrefix } from "./address";
 
+export const addressWithPrefix = (chainId: string, address: string) => {
+  return `${ChainToEip155ChainPrefix[chainId.toString()]}:${address}`;
+};
+
 export const generateSafeAccountUrl = (
   community: CommunityConfig,
   address: string,

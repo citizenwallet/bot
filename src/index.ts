@@ -9,6 +9,7 @@ import { registerCommands } from "./register-commands.js";
 import { handleMintCommand } from "./commands/mint.js";
 import { handleBurnCommand } from "./commands/burn.js";
 import { handleTransactionsCommand } from "./commands/transactions.js";
+import { handleAddOwnerCommand } from "./commands/addOwner.js";
 
 // Create a new client instance
 const client = new Client({
@@ -51,6 +52,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       break;
     case "burn":
       await handleBurnCommand(client, interaction);
+      break;
+    case "add-owner":
+      await handleAddOwnerCommand(client, interaction);
       break;
     case "ping":
       await handlePingCommand(interaction);
