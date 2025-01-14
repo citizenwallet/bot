@@ -63,7 +63,7 @@ const getCommands = (
           name: "message",
           description: "The message to send",
           type: 3, // STRING type
-          required: true,
+          required: false,
         },
       ],
     },
@@ -95,7 +95,7 @@ const getCommands = (
           name: "message",
           description: "The message to include",
           type: 3, // STRING type
-          required: true,
+          required: false,
         },
       ],
     },
@@ -127,7 +127,7 @@ const getCommands = (
           name: "message",
           description: "The message to include",
           type: 3, // STRING type
-          required: true,
+          required: false,
         },
       ],
     },
