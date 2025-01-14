@@ -3,6 +3,7 @@ import {
   BundlerService,
   getAccountAddress,
   getCardAddress,
+  isSafeOwner,
 } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction, Client } from "discord.js";
 import { keccak256, toUtf8Bytes } from "ethers";
@@ -51,11 +52,9 @@ export const handleAddOwnerCommand = async (
       community.primaryAccountConfig.chain_id.toString(),
       senderAddress
     );
-    console.log("processing for prefixedAddress", prefixedAddress);
 
-    if (updatedAccounts.includes(prefixedAddress)) {
-      console.log("Already added owner to", community.community.name);
-      console.log("Skipping", prefixedAddress);
+    const isOwner = await isSafeOwner(community, senderAddress, owner);
+    if (updatedAccounts.includes(prefixedAddress) || isOwner) {
       content.content.push(
         `✅ Added owner to ${
           community.community.name
@@ -100,8 +99,6 @@ export const handleAddOwnerCommand = async (
 
     const cardConfig = community.primarySafeCardConfig;
 
-    console.log("adding owner for", community.community.name);
-    console.log("address", prefixedAddress);
     try {
       const hash = await bundler.call(
         signer,
