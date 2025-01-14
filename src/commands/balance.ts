@@ -14,7 +14,7 @@ export const handleBalanceCommand = async (
 
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
-  let content: ContentResponse = {
+  const content: ContentResponse = {
     header: "",
     content: [],
   };
