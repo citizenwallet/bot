@@ -4,6 +4,7 @@ import {
   getAccountAddress,
   getAccountBalance,
   getCardAddress,
+  getENSAddress,
   getProfileFromAddress,
   tokenTransferCallData,
   tokenTransferEventTopic,
@@ -17,6 +18,7 @@ import {
   cleanUserId,
   createDiscordMention,
   isDiscordMention,
+  isDomainName,
 } from "../utils/address";
 import { Wallet } from "ethers";
 import { getCommunity } from "../cw";
@@ -109,6 +111,26 @@ export const handleSendCommand = async (
 
     receiverAddress = receiverCardAddress;
     receiverUserId = userId;
+  } else if (isDomainName(user)) {
+    const domain = user;
+
+    const mainnnetRpcUrl = process.env.MAINNET_RPC_URL;
+    if (!mainnnetRpcUrl) {
+      await interaction.editReply({
+        content: "Mainnet RPC URL is not set",
+      });
+      return;
+    }
+
+    const ensAddress = await getENSAddress(mainnnetRpcUrl, domain);
+    if (!ensAddress) {
+      await interaction.editReply({
+        content: "Could not find an ENS name for the domain",
+      });
+      return;
+    }
+
+    receiverAddress = ensAddress;
   } else {
     // Check if receiverAddress is a valid Ethereum address
     if (!/^0x[a-fA-F0-9]{40}$/.test(receiverAddress)) {

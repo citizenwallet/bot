@@ -14,7 +14,7 @@
         "bot-address": "tsx src/bot-address.ts"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.57",
+        "@citizenwallet/sdk": "^2.0.58",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",
