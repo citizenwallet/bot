@@ -1,48 +1,59 @@
 import { getCardAddress, getAccountBalance } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
 import { formatUnits, keccak256, toUtf8Bytes } from "ethers";
-import { getCommunity } from "../cw";
+import { getCommunities } from "../cw";
 import { generateSafeAccountUrl } from "../utils/safe";
+import { ContentResponse, generateContent } from "../utils/content";
 
 export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
   await interaction.reply({ content: "⚙️ Fetching...", ephemeral: true });
 
-  const alias = interaction.options.getString("token");
-  if (!alias) {
-    await interaction.editReply({
-      content: "You need to specify a token!",
-    });
-    return;
-  }
-
-  const community = getCommunity(alias);
+  const communities = getCommunities();
 
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
-  const address = await getCardAddress(community, hashedUserId);
+  let content: ContentResponse = {
+    header: "",
+    content: [],
+  };
 
-  if (!address) {
-    await interaction.editReply("You don't have an account yet!");
-    return;
+  for (const community of communities) {
+    content.header = `⚙️ Fetching balance for ${community.community.name}...`;
+    await interaction.editReply({
+      content: generateContent(content),
+    });
+
+    const address = await getCardAddress(community, hashedUserId);
+
+    if (!address) {
+      continue;
+    }
+
+    const balance = (await getAccountBalance(community, address)) ?? BigInt(0);
+
+    const token = community.primaryToken;
+
+    const formattedBalance = formatUnits(balance, token.decimals);
+
+    content.content.push(
+      `${community.community.name}: **${formattedBalance} ${
+        token.symbol
+      }** ([View on Safe](<${generateSafeAccountUrl(
+        community,
+        address,
+        "/balances"
+      )}>))`
+    );
+
+    await interaction.editReply({
+      content: generateContent(content),
+    });
   }
 
-  const balance = (await getAccountBalance(community, address)) ?? BigInt(0);
-
-  const token = community.primaryToken;
-
-  const formattedBalance = formatUnits(balance, token.decimals);
-
-  const explorer = community.explorer;
-
+  content.header = "✅ Done!";
   await interaction.editReply({
-    content: `✅ Balance: **${formattedBalance} ${
-      token.symbol
-    }** ([View on Safe](${generateSafeAccountUrl(
-      community,
-      address,
-      "/balances"
-    )}))`,
+    content: generateContent(content),
   });
 };

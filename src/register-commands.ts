@@ -17,29 +17,11 @@ const getCommands = (
     },
     {
       name: "balance",
-      description: "Replies with your balance!",
-      options: [
-        {
-          name: "token",
-          description: "The token to check",
-          type: 3, // STRING type
-          required: true,
-          choices,
-        },
-      ],
+      description: "Replies with your balances!",
     },
     {
       name: "address",
-      description: "Replies with your address!",
-      options: [
-        {
-          name: "token",
-          description: "The token to check",
-          type: 3, // STRING type
-          required: true,
-          choices,
-        },
-      ],
+      description: "Replies with your addresses!",
     },
     {
       name: "transactions",
