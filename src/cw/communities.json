@@ -166,7 +166,7 @@
     },
     {
         "community": {
-            "name": "EURe on Gnosis",
+            "name": "Monerium EURe on Gnosis",
             "description": "A community for EURe on Gnosis",
             "url": "https://monerium.com/",
             "alias": "eure.gnosis",
@@ -320,6 +320,90 @@
             }
         ],
         "config_location": "https://config.internal.citizenwallet.xyz/v4/wallet.commonshub.brussels.json",
+        "version": 4
+    },
+    {
+        "community": {
+            "name": "Breadchain Community Token",
+            "description": "BREAD is a digital community token and solidarity primitive developed by Breadchain Cooperative that generates yield for post-capitalist organizations",
+            "url": "https://breadchain.xyz/",
+            "alias": "bread",
+            "logo": "https://bread.citizenwallet.xyz/uploads/logo.svg",
+            "profile": {
+                "address": "0x6b3a1f4277391526413F583c23D5B9EF4d2fE986",
+                "chain_id": 100
+            },
+            "primary_token": {
+                "address": "0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3",
+                "chain_id": 100
+            },
+            "primary_account_factory": {
+                "address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
+                "chain_id": 100
+            },
+            "primary_card_manager": {
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
+                "chain_id": 100
+            }
+        },
+        "tokens": {
+            "100:0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3": {
+                "standard": "erc20",
+                "name": "Breadchain Community Token",
+                "address": "0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3",
+                "symbol": "BREAD",
+                "decimals": 18,
+                "chain_id": 100
+            }
+        },
+        "scan": {
+            "url": "https://gnosisscan.io",
+            "name": "Gnosis Explorer"
+        },
+        "accounts": {
+            "100:0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2": {
+                "chain_id": 100,
+                "entrypoint_address": "0x7079253c0358eF9Fd87E16488299Ef6e06F403B6",
+                "paymaster_address": "0x5987e57e85014B5A56C880313580346c20a5d1c1",
+                "account_factory_address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
+                "paymaster_type": "cw-safe"
+            }
+        },
+        "cards": {
+            "100:0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28": {
+                "chain_id": 100,
+                "instance_id": "cw-discord-1",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
+                "type": "safe"
+            }
+        },
+        "chains": {
+            "100": {
+                "id": 100,
+                "node": {
+                    "url": "https://100.engine.citizenwallet.xyz",
+                    "ws_url": "wss://100.engine.citizenwallet.xyz"
+                }
+            }
+        },
+        "ipfs": {
+            "url": "https://ipfs.internal.citizenwallet.xyz"
+        },
+        "plugins": [
+            {
+                "name": "Top Up",
+                "icon": "https://bread.citizenwallet.xyz/uploads/logo.svg",
+                "url": "https://topup.citizenspring.earth/bread",
+                "action": "topup"
+            },
+            {
+                "name": "Market",
+                "icon": "https://bread.citizenwallet.xyz/uploads/logo.svg",
+                "url": "https://marketplace.citizenwallet.xyz/bread",
+                "launch_mode": "webview"
+            }
+        ],
+        "config_location": "https://config.internal.citizenwallet.xyz/v4/bread.citizenwallet.xyz.json",
         "version": 4
     }
 ]

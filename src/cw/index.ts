@@ -28,10 +28,13 @@ export const getCommunities = (): CommunityConfig[] => {
 };
 
 export const getCommunityChoices = (): CommunityChoice[] => {
-  return communities.map((c: Config) => ({
-    name: c.community.name,
-    value: c.community.alias,
-  }));
+  return communities.map((c: Config) => {
+    const token = new CommunityConfig(c).primaryToken;
+    return {
+      name: `${c.community.name} (${token.symbol})`,
+      value: c.community.alias,
+    };
+  });
 };
 
 export const getCommunitiesWithMinterRole = async (): Promise<
@@ -57,16 +60,20 @@ export const getCommunitiesWithMinterRole = async (): Promise<
 
     const provider = new JsonRpcProvider(community.primaryRPCUrl);
 
-    if (
-      await hasRole(
+    let minterRole = false;
+    try {
+      minterRole = await hasRole(
         community.primaryToken.address,
         MINTER_ROLE,
         signerAccountAddress,
         provider
-      )
-    ) {
+      );
+    } catch (_) {}
+
+    if (minterRole) {
+      const token = community.primaryToken;
       choices.push({
-        name: community.community.name,
+        name: `${community.community.name} (${token.symbol})`,
         value: community.community.alias,
       });
     }
