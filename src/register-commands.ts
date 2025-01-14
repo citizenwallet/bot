@@ -42,6 +42,19 @@ const getCommands = (
       ],
     },
     {
+      name: "transactions",
+      description: "Replies with a link to your transactions!",
+      options: [
+        {
+          name: "token",
+          description: "The token to check",
+          type: 3, // STRING type
+          required: true,
+          choices,
+        },
+      ],
+    },
+    {
       name: "send",
       description: "Send a token to someone! 🚀",
       options: [

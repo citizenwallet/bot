@@ -8,6 +8,7 @@ import { handleSendCommand } from "./commands/send.js";
 import { registerCommands } from "./register-commands.js";
 import { handleMintCommand } from "./commands/mint.js";
 import { handleBurnCommand } from "./commands/burn.js";
+import { handleTransactionsCommand } from "./commands/transactions.js";
 
 // Create a new client instance
 const client = new Client({
@@ -38,6 +39,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       break;
     case "address":
       await handleAddressCommand(interaction);
+      break;
+    case "transactions":
+      await handleTransactionsCommand(interaction);
       break;
     case "send":
       await handleSendCommand(client, interaction);

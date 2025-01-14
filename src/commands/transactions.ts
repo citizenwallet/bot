@@ -4,7 +4,7 @@ import { keccak256, toUtf8Bytes } from "ethers";
 import { getCommunity } from "../cw";
 import { generateSafeAccountUrl } from "../utils/safe";
 
-export const handleAddressCommand = async (
+export const handleTransactionsCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
   await interaction.reply({ content: "⚙️ Fetching...", ephemeral: true });
@@ -27,9 +27,10 @@ export const handleAddressCommand = async (
   }
 
   await interaction.editReply({
-    content: `✅ Your address: ${address} ([Inspect your Safe](${generateSafeAccountUrl(
+    content: `✅ [View your transactions](${generateSafeAccountUrl(
       community,
-      address
-    )}))`,
+      address,
+      "/transactions"
+    )})`,
   });
 };

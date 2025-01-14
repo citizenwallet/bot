@@ -2,6 +2,7 @@ import { getCardAddress, getAccountBalance } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
 import { formatUnits, keccak256, toUtf8Bytes } from "ethers";
 import { getCommunity } from "../cw";
+import { generateSafeAccountUrl } from "../utils/safe";
 
 export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
@@ -36,6 +37,12 @@ export const handleBalanceCommand = async (
   const explorer = community.explorer;
 
   await interaction.editReply({
-    content: `✅ Balance: **${formattedBalance} ${token.symbol}** ([View on Explorer](${explorer.url}/token/${token.address}?a=${address}))`,
+    content: `✅ Balance: **${formattedBalance} ${
+      token.symbol
+    }** ([View on Safe](${generateSafeAccountUrl(
+      community,
+      address,
+      "/balances"
+    )}))`,
   });
 };
