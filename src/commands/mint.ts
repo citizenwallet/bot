@@ -16,12 +16,16 @@ import {
 } from "../utils/address";
 import { Wallet } from "ethers";
 import { getCommunity } from "../cw";
+import { createProgressSteps } from "../utils/progress";
 
 export const handleMintCommand = async (
   client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
-  await interaction.reply({ content: "⚙️ Minting...", ephemeral: true });
+  await interaction.reply({
+    content: createProgressSteps(0),
+    ephemeral: true,
+  });
 
   const alias = interaction.options.getString("token");
   if (!alias) {
@@ -109,6 +113,8 @@ export const handleMintCommand = async (
     profile = await getProfileFromAddress(community, receiverAddress);
   }
 
+  await interaction.editReply(createProgressSteps(1));
+
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
     await interaction.editReply({
@@ -130,6 +136,8 @@ export const handleMintCommand = async (
     return;
   }
 
+  await interaction.editReply(createProgressSteps(2));
+
   const bundler = new BundlerService(community);
 
   try {
@@ -141,6 +149,8 @@ export const handleMintCommand = async (
       amount.toString(),
       message
     );
+
+    await interaction.editReply(createProgressSteps(3));
 
     const explorer = community.explorer;
 

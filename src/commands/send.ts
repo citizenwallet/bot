@@ -22,12 +22,16 @@ import {
 } from "../utils/address";
 import { Wallet } from "ethers";
 import { getCommunity } from "../cw";
+import { createProgressSteps } from "../utils/progress";
 
 export const handleSendCommand = async (
   client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
-  await interaction.reply({ content: "⚙️ Sending...", ephemeral: true });
+  await interaction.reply({
+    content: createProgressSteps(0),
+    ephemeral: true,
+  });
 
   const alias = interaction.options.getString("token");
   if (!alias) {
@@ -81,6 +85,8 @@ export const handleSendCommand = async (
     });
     return;
   }
+
+  await interaction.editReply(createProgressSteps(1));
 
   let receiverAddress: string = user;
   let profile: ProfileWithTokenId | null = null;
@@ -144,6 +150,8 @@ export const handleSendCommand = async (
     profile = await getProfileFromAddress(community, receiverAddress);
   }
 
+  await interaction.editReply(createProgressSteps(2));
+
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
     await interaction.editReply({
@@ -205,6 +213,8 @@ export const handleSendCommand = async (
       userOpData,
       extraData
     );
+
+    await interaction.editReply(createProgressSteps(3));
 
     const explorer = community.explorer;
 
