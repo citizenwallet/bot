@@ -10,6 +10,9 @@ import { handleMintCommand } from "./commands/mint.js";
 import { handleBurnCommand } from "./commands/burn.js";
 import { handleTransactionsCommand } from "./commands/transactions.js";
 import { handleAddOwnerCommand } from "./commands/addOwner.js";
+import { handleTokenAutocomplete } from "./autocomplete/token.js";
+import { handleSignupCommand } from "./commands/signup.js";
+import { handleSignupModal } from "./modals/signup.js";
 
 // Create a new client instance
 const client = new Client({
@@ -30,6 +33,22 @@ client.once(Events.ClientReady, (readyClient) => {
 
 // Handle slash commands
 client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isModalSubmit()) {
+    await handleSignupModal(client, interaction);
+    return;
+  }
+
+  if (interaction.isAutocomplete()) {
+    switch (interaction.commandName) {
+      case "send":
+        await handleTokenAutocomplete(interaction);
+        break;
+      default:
+        await interaction.respond([]);
+        break;
+    }
+  }
+
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.replied) return;
@@ -56,8 +75,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     case "add-owner":
       await handleAddOwnerCommand(client, interaction);
       break;
-    case "ping":
-      await handlePingCommand(interaction);
+    case "signup":
+      await handleSignupCommand(interaction);
       break;
     default:
       await interaction.reply("Command not found");

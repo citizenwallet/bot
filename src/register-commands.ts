@@ -12,8 +12,9 @@ const getCommands = (
 ) =>
   [
     {
-      name: "ping",
-      description: "Replies with Pong!",
+      name: "signup",
+      description: "Request access for your server.",
+      default_member_permissions: "32",
     },
     {
       name: "balance",
@@ -45,7 +46,7 @@ const getCommands = (
           description: "The token to send",
           type: 3, // STRING type
           required: true,
-          choices,
+          autocomplete: true,
         },
         {
           name: "user",
