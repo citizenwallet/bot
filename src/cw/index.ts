@@ -6,6 +6,7 @@ import {
   type Config,
 } from "@citizenwallet/sdk";
 import communities from "./communities.json";
+import serverCommunityFilter from "./serverCommunityFilter.json";
 import { JsonRpcProvider, Wallet } from "ethers";
 
 export interface CommunityChoice {
@@ -23,26 +24,62 @@ export const getCommunity = (alias: string): CommunityConfig => {
   return new CommunityConfig(community);
 };
 
-export const getCommunities = (): CommunityConfig[] => {
-  return communities.map((c: Config) => new CommunityConfig(c));
+export const getCommunities = (serverId?: string): CommunityConfig[] => {
+  let server = serverCommunityFilter.find((s) => s.serverId === serverId);
+  if (!server) {
+    server = serverCommunityFilter.find((s) => s.serverId === "global");
+  }
+
+  return communities
+    .filter(
+      (c: Config) =>
+        !serverId ||
+        server.communityChoices.length === 0 ||
+        server.communityChoices.includes(c.community.alias)
+    )
+    .map((c: Config) => new CommunityConfig(c));
 };
 
-export const getCommunityChoices = (): CommunityChoice[] => {
-  return communities.map((c: Config) => {
-    const token = new CommunityConfig(c).primaryToken;
-    return {
-      name: `${c.community.name} (${token.symbol})`,
-      value: c.community.alias,
-    };
-  });
+export const getCommunityChoices = (serverId?: string): CommunityChoice[] => {
+  let server = serverCommunityFilter.find((s) => s.serverId === serverId);
+  if (!server) {
+    server = serverCommunityFilter.find((s) => s.serverId === "global");
+  }
+
+  return communities
+    .filter(
+      (c: Config) =>
+        !serverId ||
+        server.communityChoices.length === 0 ||
+        server.communityChoices.includes(c.community.alias)
+    )
+    .map((c: Config) => {
+      const token = new CommunityConfig(c).primaryToken;
+      return {
+        name: `${c.community.name} (${token.symbol})`,
+        value: c.community.alias,
+      };
+    });
 };
 
-export const getCommunitiesWithMinterRole = async (): Promise<
-  CommunityChoice[]
-> => {
+export const getCommunitiesWithMinterRole = async (
+  serverId?: string
+): Promise<CommunityChoice[]> => {
+  let server = serverCommunityFilter.find((s) => s.serverId === serverId);
+  if (!server) {
+    server = serverCommunityFilter.find((s) => s.serverId === "global");
+  }
+
   const choices: CommunityChoice[] = [];
 
   for (const community of getCommunities()) {
+    const shouldInclude =
+      !serverId ||
+      server.communityChoices.length === 0 ||
+      server.communityChoices.includes(community.community.alias);
+
+    if (!shouldInclude) continue;
+
     const privateKey = process.env.BOT_PRIVATE_KEY;
     if (!privateKey) {
       continue;

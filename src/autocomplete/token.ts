@@ -1,5 +1,5 @@
 import { AutocompleteInteraction } from "discord.js";
-import { getCommunityChoices } from "../cw";
+import { getCommunityChoices, getCommunitiesWithMinterRole } from "../cw";
 
 export const handleTokenAutocomplete = async (
   interaction: AutocompleteInteraction
@@ -7,7 +7,12 @@ export const handleTokenAutocomplete = async (
   const serverId = interaction.guildId;
   if (!serverId) return;
 
-  const communities = getCommunityChoices();
+  const commandName = interaction.commandName;
+  const requiresMintRole = ["mint", "burn"].includes(commandName);
+
+  const communities = requiresMintRole
+    ? await getCommunitiesWithMinterRole(serverId)
+    : getCommunityChoices(serverId);
 
   const inputCurrentValue = interaction.options.getFocused();
   const searchTerms = inputCurrentValue.toLowerCase().split(" ");

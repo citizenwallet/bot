@@ -1,15 +1,7 @@
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
-import {
-  CommunityChoice,
-  getCommunitiesWithMinterRole,
-  getCommunityChoices,
-} from "./cw";
 
-const getCommands = (
-  choices: CommunityChoice[],
-  minterChoices: CommunityChoice[]
-) =>
+const getCommands = () =>
   [
     {
       name: "signup",
@@ -59,7 +51,7 @@ const getCommands = (
           description: "The token to check",
           type: 3, // STRING type
           required: true,
-          choices,
+          autocomplete: true,
         },
       ],
     },
@@ -104,7 +96,7 @@ const getCommands = (
           description: "The token to mint",
           type: 3, // STRING type
           required: true,
-          choices: minterChoices,
+          autocomplete: true,
         },
         {
           name: "user",
@@ -136,7 +128,7 @@ const getCommands = (
           description: "The token to burn",
           type: 3, // STRING type
           required: true,
-          choices: minterChoices,
+          autocomplete: true,
         },
         {
           name: "user",
@@ -185,10 +177,7 @@ export const registerCommands = async () => {
   try {
     console.log("Started refreshing application (/) commands.");
 
-    const choices = getCommunityChoices();
-    const minterChoices = await getCommunitiesWithMinterRole();
-
-    const commands = getCommands(choices, minterChoices);
+    const commands = getCommands();
 
     await rest.put(Routes.applicationCommands(clientId), { body: commands });
 

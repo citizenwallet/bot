@@ -10,7 +10,15 @@ export const handleAddressCommand = async (
 ) => {
   await interaction.reply({ content: "⚙️ Fetching...", ephemeral: true });
 
-  const communities = getCommunities();
+  const serverId = interaction.guildId;
+  if (!serverId) {
+    await interaction.editReply({
+      content: "This command can only be used in a server.",
+    });
+    return;
+  }
+
+  const communities = getCommunities(serverId);
 
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
