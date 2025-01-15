@@ -110,7 +110,17 @@ export const handleMintCommand = async (
       return;
     }
 
-    profile = await getProfileFromAddress(community, receiverAddress);
+    const ipfsDomain = process.env.IPFS_DOMAIN;
+    if (!ipfsDomain) {
+      await interaction.editReply("Could not find an IPFS domain!");
+      return;
+    }
+
+    profile = await getProfileFromAddress(
+      ipfsDomain,
+      community,
+      receiverAddress
+    );
   }
 
   await interaction.editReply(createProgressSteps(1));

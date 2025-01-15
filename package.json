@@ -14,16 +14,18 @@
         "bot-address": "tsx src/bot-address.ts"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.58",
+        "@citizenwallet/sdk": "^2.0.59",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",
         "express": "^4.21.2",
+        "qrcode": "^1.5.4",
         "sharp": "^0.33.5"
     },
     "devDependencies": {
         "@types/express": "^5.0.0",
         "@types/node": "^20.11.24",
+        "@types/qrcode": "^1.5.5",
         "rimraf": "^6.0.1",
         "tsx": "^4.7.1",
         "typescript": "^5.3.3"

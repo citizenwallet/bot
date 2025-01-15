@@ -21,8 +21,34 @@ const getCommands = (
       description: "Replies with your balances!",
     },
     {
+      name: "show-balance",
+      description: "Shows your balance of a token to others",
+      options: [
+        {
+          name: "token",
+          description: "The token to check",
+          type: 3, // STRING type
+          required: true,
+          autocomplete: true,
+        },
+      ],
+    },
+    {
       name: "address",
       description: "Replies with your addresses!",
+    },
+    {
+      name: "show-address",
+      description: "Shows your address to others",
+      options: [
+        {
+          name: "token",
+          description: "The token to check",
+          type: 3, // STRING type
+          required: true,
+          autocomplete: true,
+        },
+      ],
     },
     {
       name: "transactions",

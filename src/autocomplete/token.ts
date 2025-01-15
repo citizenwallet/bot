@@ -7,8 +7,6 @@ export const handleTokenAutocomplete = async (
   const serverId = interaction.guildId;
   if (!serverId) return;
 
-  console.log(serverId);
-
   const communities = getCommunityChoices();
 
   const inputCurrentValue = interaction.options.getFocused();
