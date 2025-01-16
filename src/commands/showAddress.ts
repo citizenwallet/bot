@@ -1,4 +1,8 @@
-import { getCardAddress, generateReceiveLink } from "@citizenwallet/sdk";
+import {
+  getCardAddress,
+  generateReceiveLink,
+  generateLegacyReceiveLink,
+} from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
 import { keccak256, toUtf8Bytes } from "ethers";
 import { getCommunity } from "../cw";
@@ -37,7 +41,7 @@ export const handleShowAddressCommand = async (
     return;
   }
 
-  const receiveLink = generateReceiveLink(baseUrl, community, address);
+  const receiveLink = generateLegacyReceiveLink(baseUrl, community, address);
 
   // Generate QR code as a data URL
   const qrCodeDataUrl = await QRCode.toDataURL(receiveLink, {
@@ -54,7 +58,7 @@ export const handleShowAddressCommand = async (
   await interaction.editReply({
     content: `Address for ${createDiscordMention(
       interaction.user.id
-    )}: \n<${receiveLink}> \n**${address}**`,
+    )}: \n[open Citizen Wallet >>](<${receiveLink}>) \n**${address}**`,
     files: [
       {
         attachment: qrCodeBuffer,
