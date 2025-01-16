@@ -72,6 +72,19 @@ export const getCommunitiesWithMinterRole = async (
 
   const choices: CommunityChoice[] = [];
 
+  if (server.mintingChoices && server.mintingChoices.length > 0) {
+    for (const community of getCommunities()) {
+      choices.push({
+        name: `${community.community.name} (${community.primaryToken.symbol})`,
+        value: community.community.alias,
+      });
+    }
+
+    console.log(choices);
+
+    return choices;
+  }
+
   for (const community of getCommunities()) {
     const shouldInclude =
       !serverId ||

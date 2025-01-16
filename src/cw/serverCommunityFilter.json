@@ -18,6 +18,9 @@
         "communityChoices": [
             "wallet.commonshub.brussels",
             "wallet.pay.brussels"
+        ],
+        "mintingChoices": [
+            "wallet.commonshub.brussels"
         ]
     },
     {
