@@ -58,7 +58,7 @@ export const handleShowAddressCommand = async (
   await interaction.editReply({
     content: `Address for ${createDiscordMention(
       interaction.user.id
-    )}: \n[open Citizen Wallet >>](<${receiveLink}>) \n**${address}**`,
+    )}: **${address}** \n\n[open in Citizen Wallet 📱](<${receiveLink}>)`,
     files: [
       {
         attachment: qrCodeBuffer,
