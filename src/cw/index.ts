@@ -80,8 +80,6 @@ export const getCommunitiesWithMinterRole = async (
       });
     }
 
-    console.log(choices);
-
     return choices;
   }
 
