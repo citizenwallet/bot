@@ -72,6 +72,10 @@ export const getCommunitiesWithMinterRole = async (
 
   const choices: CommunityChoice[] = [];
 
+  if (!server.mintingChoices) {
+    return [];
+  }
+
   if (server.mintingChoices && server.mintingChoices.length > 0) {
     for (const community of getCommunities()) {
       const shouldInclude =
