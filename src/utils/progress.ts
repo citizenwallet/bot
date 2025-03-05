@@ -3,7 +3,7 @@
  * @param step Current step (1-3)
  * @returns String representing the progress steps with emoji
  */
-export function createProgressSteps(step: number): string {
+export function createProgressSteps(step: number, suffix: string = ""): string {
   const steps = ["⚪️", "⚪️", "⚪️"];
   const emoji = "⚙️";
 
@@ -12,5 +12,5 @@ export function createProgressSteps(step: number): string {
     steps[i] = "🪙";
   }
 
-  return `${emoji} [${steps.join("")}]`;
+  return `${emoji} [${steps.join("")}] ${suffix}`;
 }

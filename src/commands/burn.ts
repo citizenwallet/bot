@@ -39,6 +39,12 @@ export const handleBurnCommand = async (
     return;
   }
 
+  const usersArray = user.split(",");
+  if (usersArray.length > 1) {
+    await interaction.editReply("You can only burn from one user at a time");
+    return;
+  }
+
   const amount = interaction.options.getNumber("amount");
   if (!amount) {
     await interaction.editReply("You need to specify an amount!");
