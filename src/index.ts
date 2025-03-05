@@ -77,13 +77,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
     case "balance":
       await handleBalanceCommand(interaction);
       break;
-    case "show-balance":
+    case "share-balance":
       await handleShowBalanceCommand(interaction);
       break;
     case "address":
       await handleAddressCommand(interaction);
       break;
-    case "show-address":
+    case "share-address":
       await handleShowAddressCommand(interaction);
       break;
     case "transactions":
