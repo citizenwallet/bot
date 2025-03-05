@@ -10,11 +10,11 @@ const getCommands = () =>
     },
     {
       name: "balance",
-      description: "Replies with your balances!",
+      description: "Reveals your balances privately! 🥷",
     },
     {
-      name: "show-balance",
-      description: "Shows your balance of a token to others",
+      name: "share-balance",
+      description: "Shares your balance of a token to others 📣",
       options: [
         {
           name: "token",
@@ -27,11 +27,11 @@ const getCommands = () =>
     },
     {
       name: "address",
-      description: "Replies with your addresses!",
+      description: "Reveals your address privately! 🥷",
     },
     {
-      name: "show-address",
-      description: "Shows your address to others",
+      name: "share-address",
+      description: "Shares your address to others 📣",
       options: [
         {
           name: "token",
@@ -44,7 +44,7 @@ const getCommands = () =>
     },
     {
       name: "transactions",
-      description: "Replies with a link to your transactions!",
+      description: "Reveals a link to your transactions privately! 🥷",
       options: [
         {
           name: "token",
