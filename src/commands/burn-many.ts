@@ -5,7 +5,7 @@ import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
-import { getReceiverFromUserInputWithReplies } from "./conversion/receiver";
+import { getAddressFromUserInputWithReplies } from "./conversion/address";
 
 export const handleBurnManyCommand = async (
   client: Client,
@@ -72,8 +72,8 @@ export const handleBurnManyCommand = async (
 
   for (let userIndex = 0; userIndex < usersArray.length; userIndex++) {
     const user = usersArray[userIndex];
-    const { receiverAddress, profile, receiverUserId } =
-      await getReceiverFromUserInputWithReplies(
+    const { address, profile, userId } =
+      await getAddressFromUserInputWithReplies(
         user,
         community,
         content,
@@ -89,7 +89,7 @@ export const handleBurnManyCommand = async (
       content: generateContent(content),
     });
 
-    if (!receiverAddress) {
+    if (!address) {
       continue;
     }
 
@@ -101,17 +101,17 @@ export const handleBurnManyCommand = async (
         signer,
         token.address,
         signerAccountAddress,
-        receiverAddress,
+        address,
         amount.toString(),
         message
       );
 
       const explorer = community.explorer;
 
-      if (receiverUserId) {
+      if (userId) {
         // send a DM to the receiver
         try {
-          const receiver = await client.users.fetch(receiverUserId);
+          const receiver = await client.users.fetch(userId);
 
           const dmChannel = await receiver.createDM();
 
@@ -127,7 +127,7 @@ export const handleBurnManyCommand = async (
             await dmChannel.send(`*${message}*`);
           }
         } catch (error) {
-          console.error("Failed to send message to receiver", error);
+          console.error("Failed to send message to user", error);
         }
       }
 
@@ -141,7 +141,7 @@ export const handleBurnManyCommand = async (
         content: generateContent(content),
       });
     } catch (error) {
-      console.error("Failed to mint", error);
+      console.error("Failed to burn", error);
       content.content.push("❌ Failed to burn");
       await interaction.editReply({
         content: generateContent(content),

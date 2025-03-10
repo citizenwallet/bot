@@ -5,7 +5,7 @@ import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
-import { getReceiverFromUserInputWithReplies } from "./conversion/receiver";
+import { getAddressFromUserInputWithReplies } from "./conversion/address";
 
 export const handleMintCommand = async (
   client: Client,
@@ -52,13 +52,16 @@ export const handleMintCommand = async (
   for (let user of usersArray) {
     user = user.trim();
 
-    const { receiverAddress, receiverUserId, profile } =
-      await getReceiverFromUserInputWithReplies(
-        user,
-        community,
-        content,
-        interaction
-      );
+    const {
+      address: receiverAddress,
+      userId: receiverUserId,
+      profile,
+    } = await getAddressFromUserInputWithReplies(
+      user,
+      community,
+      content,
+      interaction
+    );
 
     content.header = createProgressSteps(
       1,

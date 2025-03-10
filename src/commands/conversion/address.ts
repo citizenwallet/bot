@@ -14,13 +14,13 @@ import {
 } from "../../utils/address";
 import { ContentResponse, generateContent } from "../../utils/content";
 
-const getReceiverFromDiscordMention = async (
+const fromDiscordMention = async (
   user: string,
   community: CommunityConfig,
   content: ContentResponse,
   interaction: ChatInputCommandInteraction
-): Promise<{ receiverAddress: string; receiverUserId?: string }> => {
-  let receiverAddress = user.replace(/<|>/g, "");
+): Promise<{ address: string; userId?: string }> => {
+  let address = user.replace(/<|>/g, "");
 
   const userId = cleanUserId(user);
   if (!userId) {
@@ -28,32 +28,29 @@ const getReceiverFromDiscordMention = async (
     await interaction.editReply({
       content: generateContent(content),
     });
-    return { receiverAddress };
+    return { address };
   }
 
-  const receiverHashedUserId = keccak256(toUtf8Bytes(userId));
+  const hashedUserId = keccak256(toUtf8Bytes(userId));
 
-  const receiverCardAddress = await getCardAddress(
-    community,
-    receiverHashedUserId
-  );
-  if (!receiverCardAddress) {
+  const cardAddress = await getCardAddress(community, hashedUserId);
+  if (!cardAddress) {
     content.content.push("Could not find an account to send to!");
     await interaction.editReply({
       content: generateContent(content),
     });
-    return { receiverAddress };
+    return { address };
   }
 
-  return { receiverAddress: receiverCardAddress, receiverUserId: userId };
+  return { address: cardAddress, userId: userId };
 };
 
-const getReceiverFromDomainName = async (
+const fromDomainName = async (
   user: string,
   community: CommunityConfig,
   content: ContentResponse,
   interaction: ChatInputCommandInteraction
-): Promise<{ receiverAddress: string }> => {
+): Promise<{ address: string }> => {
   const domain = user;
 
   const mainnnetRpcUrl = process.env.MAINNET_RPC_URL;
@@ -75,15 +72,15 @@ const getReceiverFromDomainName = async (
     return;
   }
 
-  return { receiverAddress: ensAddress };
+  return { address: ensAddress };
 };
 
-const getReceiverFromAddress = async (
+const fromEvmAddress = async (
   user: string,
   community: CommunityConfig,
   content: ContentResponse,
   interaction: ChatInputCommandInteraction
-): Promise<{ receiverAddress: string; profile: ProfileWithTokenId }> => {
+): Promise<{ address: string; profile: ProfileWithTokenId }> => {
   // Check if receiverAddress is a valid Ethereum address
   if (!/^0x[a-fA-F0-9]{40}$/.test(user)) {
     content.content.push(
@@ -102,24 +99,24 @@ const getReceiverFromAddress = async (
   }
 
   const profile = await getProfileFromAddress(ipfsDomain, community, user);
-  return { receiverAddress: user, profile };
+  return { address: user, profile };
 };
 
-export const getReceiverFromUserInputWithReplies = async (
+export const getAddressFromUserInputWithReplies = async (
   user: string,
   community: CommunityConfig,
   content: ContentResponse,
   interaction: ChatInputCommandInteraction
 ): Promise<{
-  receiverAddress: string;
-  receiverUserId?: string;
+  address: string;
+  userId?: string;
   profile?: ProfileWithTokenId;
 }> => {
   if (isDiscordMention(user)) {
-    return getReceiverFromDiscordMention(user, community, content, interaction);
+    return fromDiscordMention(user, community, content, interaction);
   } else if (isDomainName(user)) {
-    return getReceiverFromDomainName(user, community, content, interaction);
+    return fromDomainName(user, community, content, interaction);
   } else {
-    return getReceiverFromAddress(user, community, content, interaction);
+    return fromEvmAddress(user, community, content, interaction);
   }
 };

@@ -5,7 +5,7 @@ import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
 import { ContentResponse } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
-import { getReceiverFromUserInputWithReplies } from "./conversion/receiver";
+import { getAddressFromUserInputWithReplies } from "./conversion/address";
 
 export const handleBurnCommand = async (
   client: Client,
@@ -51,13 +51,12 @@ export const handleBurnCommand = async (
     content: [],
   };
 
-  const { receiverAddress, profile, receiverUserId } =
-    await getReceiverFromUserInputWithReplies(
-      user,
-      community,
-      content,
-      interaction
-    );
+  const { address, profile, userId } = await getAddressFromUserInputWithReplies(
+    user,
+    community,
+    content,
+    interaction
+  );
 
   await interaction.editReply(createProgressSteps(1));
 
@@ -91,7 +90,7 @@ export const handleBurnCommand = async (
       signer,
       token.address,
       signerAccountAddress,
-      receiverAddress,
+      address,
       amount.toString(),
       message
     );
@@ -100,9 +99,9 @@ export const handleBurnCommand = async (
 
     const explorer = community.explorer;
 
-    if (receiverUserId) {
+    if (userId) {
       try {
-        const receiver = await client.users.fetch(receiverUserId);
+        const receiver = await client.users.fetch(userId);
 
         const dmChannel = await receiver.createDM();
 
