@@ -257,7 +257,7 @@ export const handleSendCommand = async (
         cardConfig.address,
         signerAccountAddress,
         calldata,
-        undefined,
+        BigInt(0),
         userOpData,
         extraData
       );
