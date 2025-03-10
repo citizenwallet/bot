@@ -4,3 +4,6 @@ dist/
 
 tx-channel-id
 .vercel
+
+
+.bot/
