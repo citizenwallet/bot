@@ -1,13 +1,13 @@
 import { BundlerService, getAccountAddress } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction, Client } from "discord.js";
-import { Wallet } from "ethers";
+import { ethers, Wallet } from "ethers";
 import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
 import { getReceiverFromUserInputWithReplies } from "./conversion/receiver";
 
-export const handleBurnCommand = async (
+export const handleBurnManyCommand = async (
   client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
@@ -22,7 +22,7 @@ export const handleBurnCommand = async (
     return;
   }
 
-  const users = interaction.options.getString("user");
+  const users = interaction.options.getString("users");
   if (!users) {
     await interaction.editReply("You need to specify a user!");
     return;
@@ -81,8 +81,8 @@ export const handleBurnCommand = async (
       );
 
     content.header = createProgressSteps(
-      1,
-      `${userIndex + 2}/${usersArray.length + 2}`
+      2,
+      `${userIndex + 1}/${usersArray.length}`
     );
 
     await interaction.editReply({
@@ -94,6 +94,7 @@ export const handleBurnCommand = async (
     }
 
     const bundler = new BundlerService(community);
+    //new MockBundlerService(community);
 
     try {
       const hash = await bundler.burnFromERC20Token(
@@ -130,16 +131,32 @@ export const handleBurnCommand = async (
         }
       }
 
-      return interaction.editReply({
-        content: `✅ Burned **${amount} ${token.symbol}** from ${
+      content.content.push(
+        `✅ Burned **${amount} ${token.symbol}** from ${
           profile?.name ?? profile?.username ?? user
-        } ([View Transaction](${explorer.url}/tx/${hash}))`,
+        } ([View Transaction](${explorer.url}/tx/${hash}))`
+      );
+
+      await interaction.editReply({
+        content: generateContent(content),
       });
     } catch (error) {
-      console.error("Failed to burn", error);
+      console.error("Failed to mint", error);
+      content.content.push("❌ Failed to burn");
       await interaction.editReply({
-        content: "❌ Failed to burn",
+        content: generateContent(content),
       });
     }
   }
+  content.header = createProgressSteps(3);
+
+  await interaction.editReply({
+    content: generateContent(content),
+  });
+
+  content.header = "✅ Done";
+
+  await interaction.editReply({
+    content: generateContent(content),
+  });
 };

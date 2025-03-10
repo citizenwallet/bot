@@ -1,27 +1,11 @@
-import {
-  BundlerService,
-  getAccountAddress,
-  getCardAddress,
-  getENSAddress,
-  getProfileFromAddress,
-  type ProfileWithTokenId,
-} from "@citizenwallet/sdk";
+import { BundlerService, getAccountAddress } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction, Client } from "discord.js";
-import { keccak256, toUtf8Bytes } from "ethers";
-import {
-  cleanUserId,
-  createDiscordMention,
-  isDiscordMention,
-  isDomainName,
-} from "../utils/address";
 import { Wallet } from "ethers";
 import { getCommunity } from "../cw";
-import { createProgressSteps } from "../utils/progress";
+import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
-import {
-  getReceiverFromDiscordMention,
-  getReceiverFromUserInputWithReplies,
-} from "./conversion/receiver";
+import { createProgressSteps } from "../utils/progress";
+import { getReceiverFromUserInputWithReplies } from "./conversion/receiver";
 
 export const handleMintCommand = async (
   client: Client,

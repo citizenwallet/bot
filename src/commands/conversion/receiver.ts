@@ -3,17 +3,16 @@ import {
   getCardAddress,
   getENSAddress,
   getProfileFromAddress,
-  Profile,
   ProfileWithTokenId,
-} from "@citizenwallet/sdk/dist/src";
-import { keccak256, toUtf8Bytes } from "ethers/lib.commonjs";
+} from "@citizenwallet/sdk";
+import { ChatInputCommandInteraction } from "discord.js/typings";
+import { keccak256, toUtf8Bytes } from "ethers";
 import {
   cleanUserId,
   isDiscordMention,
   isDomainName,
 } from "../../utils/address";
 import { ContentResponse, generateContent } from "../../utils/content";
-import { ChatInputCommandInteraction } from "discord.js/typings";
 
 const getReceiverFromDiscordMention = async (
   user: string,
