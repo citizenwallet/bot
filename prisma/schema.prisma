@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DiscordServer {
+  id         String   @id
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  community_choices     CommunityChoice[]
+  notification_channels NotificationChannel[]
+
+  @@map("discord_servers")
+}
+
+model CommunityChoice {
+  alias             String
+  name              String
+  minting           Boolean       @default(false)
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  discord_server    DiscordServer @relation(fields: [discord_server_id], references: [id])
+  discord_server_id String
+
+  @@id([discord_server_id, alias])
+  @@map("community_choices")
+}
+
+model NotificationChannel {
+  command           String
+  discord_server    DiscordServer @relation(fields: [discord_server_id], references: [id])
+  discord_server_id String
+  channel_id        String
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  @@id([command, discord_server_id, channel_id])
+  @@map("notification_channels")
+}
