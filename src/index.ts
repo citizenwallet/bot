@@ -14,6 +14,7 @@ import { handleSignupCommand } from "./commands/signup.js";
 import { handleSignupModal } from "./modals/signup.js";
 import { handleShowBalanceCommand } from "./commands/showBalance.js";
 import { handleShowAddressCommand } from "./commands/showAddress.js";
+import { handleBurnManyCommand } from "./commands/burn-many.js";
 
 // Create a new client instance
 const client = new Client({
@@ -97,6 +98,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       break;
     case "burn":
       await handleBurnCommand(client, interaction);
+      break;
+    case "burn-many":
+      await handleBurnManyCommand(client, interaction);
       break;
     case "add-owner":
       await handleAddOwnerCommand(client, interaction);

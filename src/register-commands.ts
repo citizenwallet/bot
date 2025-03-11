@@ -151,6 +151,39 @@ const getCommands = () =>
       ],
     },
     {
+      name: "burn-many",
+      description: "Burn a token from many users at once! 🔥",
+      default_member_permissions: "32",
+      options: [
+        {
+          name: "token",
+          description: "The token to burn",
+          type: 3, // STRING type
+          required: true,
+          autocomplete: true,
+        },
+        {
+          name: "users",
+          description:
+            "The list of @username or 0x address whose tokens get burnt",
+          type: 3, // STRING type
+          required: true,
+        },
+        {
+          name: "amount",
+          description: "The amount to burn",
+          type: 10, // NUMBER type
+          required: true,
+        },
+        {
+          name: "message",
+          description: "The message to include",
+          type: 3, // STRING type
+          required: false,
+        },
+      ],
+    },
+    {
       name: "add-owner",
       description: "Add an owner to your Safe! 🔑",
       options: [
