@@ -5,13 +5,14 @@ import {
   ExampleAddressTask,
   ExampleBalanceTask,
   ExampleBurnTask,
-  ExampleDoTask,
+  ExampleSendTask,
   ExampleErrorTask,
   ExampleMintTask,
   ExampleMissingInformationTask,
   ExampleShareAddressTask,
   ExampleShareBalanceTask,
   GenericTaskArgs,
+  ExampleHelpTask,
 } from "../commands/do/tasks";
 
 const client = new OpenAI({
@@ -80,13 +81,14 @@ export const parseDoTask = async (
         role: "system",
         content: constructSystemPrompt(
           [
-            ExampleDoTask,
+            ExampleSendTask,
             ExampleAddressTask,
             ExampleBalanceTask,
             ExampleShareAddressTask,
             ExampleShareBalanceTask,
             ExampleMintTask,
             ExampleBurnTask,
+            ExampleHelpTask,
           ],
           communities
         ),

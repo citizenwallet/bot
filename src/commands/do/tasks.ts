@@ -46,6 +46,10 @@ export interface BurnTaskArgs {
   message: string;
 }
 
+export interface HelpTaskArgs {
+  name: string;
+}
+
 export interface MissingInformationTaskArgs {
   name: string;
   missingInformation: string;
@@ -65,8 +69,10 @@ export interface DoTask {
     | "shareBalance"
     | "mint"
     | "burn"
+    | "help"
     | "error"
     | "missingInformation";
+  description: string;
   purpose: string;
   args:
     | SendTaskArgs
@@ -76,12 +82,14 @@ export interface DoTask {
     | ShareBalanceTaskArgs
     | MintTaskArgs
     | BurnTaskArgs
+    | HelpTaskArgs
     | ErrorTaskArgs
     | MissingInformationTaskArgs;
 }
 
-export const ExampleDoTask: DoTask = {
+export const ExampleSendTask: DoTask = {
   name: "send",
+  description: "Send a token to another user",
   purpose:
     "Send a token to another user, the token is resolved via the alias. Message is optional (empty string).",
   args: {
@@ -95,6 +103,7 @@ export const ExampleDoTask: DoTask = {
 
 export const ExampleAddressTask: DoTask = {
   name: "address",
+  description: "Reveal your address for the communities you specify",
   purpose:
     "Reveal the user's address for the communities they specify (these will go in the alias field). If they are not specific about which community, put all the community aliases in the alias field.",
   args: {
@@ -105,6 +114,7 @@ export const ExampleAddressTask: DoTask = {
 
 export const ExampleBalanceTask: DoTask = {
   name: "balance",
+  description: "Reveal your balance privately for the communities you specify",
   purpose:
     "Reveal the user's balance for the communities they specify (these will go in the alias field). If they are not specific about which community, put all the community aliases in the alias field.",
   args: {
@@ -115,6 +125,7 @@ export const ExampleBalanceTask: DoTask = {
 
 export const ExampleShareAddressTask: DoTask = {
   name: "shareAddress",
+  description: "Share your address for the community you specify",
   purpose:
     "Share the user's address for the community they have specified (this will go in the alias field).",
   args: {
@@ -125,6 +136,7 @@ export const ExampleShareAddressTask: DoTask = {
 
 export const ExampleShareBalanceTask: DoTask = {
   name: "shareBalance",
+  description: "Share your balance for the community you specify",
   purpose:
     "Share the user's balance for the community they have specified (this will go in the alias field). Try to determine which community alias the user is referring to from the ones provided below.",
   args: {
@@ -135,6 +147,7 @@ export const ExampleShareBalanceTask: DoTask = {
 
 export const ExampleMintTask: DoTask = {
   name: "mint",
+  description: "Mint a token to another user",
   purpose:
     "Mint a token to another user, the token is resolved via the alias. Message is optional (empty string).",
   args: {
@@ -148,8 +161,9 @@ export const ExampleMintTask: DoTask = {
 
 export const ExampleBurnTask: DoTask = {
   name: "burn",
+  description: "Burn a token from another account",
   purpose:
-    "Burn a token, the token is resolved via the alias. Message is optional (empty string).",
+    "Burn a token from another account, the token is resolved via the alias. Message is optional (empty string).",
   args: {
     name: "burn",
     alias: "alias1",
@@ -159,8 +173,19 @@ export const ExampleBurnTask: DoTask = {
   },
 };
 
+export const ExampleHelpTask: DoTask = {
+  name: "help",
+  description: "Get help",
+  purpose:
+    "If the user is trying to ask for help with commands or trying to list the available commands.",
+  args: {
+    name: "help",
+  },
+};
+
 export const ExampleMissingInformationTask: DoTask = {
   name: "missingInformation",
+  description: "Handle a missing information",
   purpose: "Handle a missing information",
   args: {
     name: "missingInformation",
@@ -170,6 +195,7 @@ export const ExampleMissingInformationTask: DoTask = {
 
 export const ExampleErrorTask: DoTask = {
   name: "error",
+  description: "Handle an error",
   purpose: "Handle an error",
   args: {
     name: "error",
