@@ -8,7 +8,7 @@ export const handleTokenAutocomplete = async (
   if (!serverId) return;
 
   const commandName = interaction.commandName;
-  const requiresMintRole = ["mint", "burn"].includes(commandName);
+  const requiresMintRole = ["mint", "burn", "burn-many"].includes(commandName);
 
   const communities = requiresMintRole
     ? await getCommunitiesWithMinterRole(serverId)
