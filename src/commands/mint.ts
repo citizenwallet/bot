@@ -6,6 +6,7 @@ import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
 import { getAddressFromUserInputWithReplies } from "./conversion/address";
+import { MintTaskArgs } from "./do/tasks";
 
 export const handleMintCommand = async (
   client: Client,
@@ -36,11 +37,25 @@ export const handleMintCommand = async (
 
   const message = interaction.options.getString("message");
 
+  await mintCommand(client, interaction, {
+    name: "mint",
+    alias,
+    users: users.split(","),
+    amount,
+    message,
+  });
+};
+
+export const mintCommand = async (
+  client: Client,
+  interaction: ChatInputCommandInteraction,
+  mintTaskArgs: MintTaskArgs
+) => {
+  const { alias, users, amount, message } = mintTaskArgs;
+
   const community = getCommunity(alias);
 
   const token = community.primaryToken;
-
-  const usersArray = users.split(",");
 
   const content: ContentResponse = {
     header: "",
@@ -49,7 +64,7 @@ export const handleMintCommand = async (
 
   let userIndex = 0;
 
-  for (let user of usersArray) {
+  for (let user of users) {
     user = user.trim();
 
     const {
@@ -63,10 +78,7 @@ export const handleMintCommand = async (
       interaction
     );
 
-    content.header = createProgressSteps(
-      1,
-      `${userIndex + 1}/${usersArray.length}`
-    );
+    content.header = createProgressSteps(1, `${userIndex + 1}/${users.length}`);
     await interaction.editReply({
       content: generateContent(content),
     });
@@ -94,10 +106,7 @@ export const handleMintCommand = async (
       continue;
     }
 
-    content.header = createProgressSteps(
-      2,
-      `${userIndex + 1}/${usersArray.length}`
-    );
+    content.header = createProgressSteps(2, `${userIndex + 1}/${users.length}`);
     await interaction.editReply({
       content: generateContent(content),
     });
@@ -116,7 +125,7 @@ export const handleMintCommand = async (
 
       content.header = createProgressSteps(
         3,
-        `${userIndex + 1}/${usersArray.length}`
+        `${userIndex + 1}/${users.length}`
       );
       await interaction.editReply({
         content: generateContent(content),
@@ -146,7 +155,7 @@ export const handleMintCommand = async (
         }
       }
 
-      content.header = `✅ Minted ${userIndex + 1}/${usersArray.length}`;
+      content.header = `✅ Minted ${userIndex + 1}/${users.length}`;
       content.content.push(
         `**${amount} ${token.symbol}** to ${
           profile?.name ?? profile?.username ?? user

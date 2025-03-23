@@ -3,6 +3,7 @@ import { ChatInputCommandInteraction } from "discord.js";
 import { formatUnits, keccak256, toUtf8Bytes } from "ethers";
 import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
+import { ShareBalanceTaskArgs } from "./do/tasks";
 
 export const handleShowBalanceCommand = async (
   interaction: ChatInputCommandInteraction
@@ -15,7 +16,17 @@ export const handleShowBalanceCommand = async (
     return;
   }
 
-  const community = getCommunity(alias);
+  await shareBalanceCommand(interaction, {
+    name: "shareBalance",
+    alias,
+  });
+};
+
+export const shareBalanceCommand = async (
+  interaction: ChatInputCommandInteraction,
+  shareBalanceTaskArgs: ShareBalanceTaskArgs
+) => {
+  const community = getCommunity(shareBalanceTaskArgs.alias);
 
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 

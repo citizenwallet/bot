@@ -10,7 +10,10 @@
     {
         "serverId": "1125394118827331634",
         "serverName": "Citizen Wallet",
-        "communityChoices": []
+        "communityChoices": [],
+        "mintingChoices": [
+            "gratitude"
+        ]
     },
     {
         "serverId": "649359982424358952",

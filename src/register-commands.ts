@@ -4,6 +4,18 @@ import "dotenv/config";
 const getCommands = () =>
   [
     {
+      name: "do",
+      description: "Ask me to do something! 🤖",
+      options: [
+        {
+          name: "task",
+          description: "The task to do",
+          type: 3, // STRING type
+          required: true,
+        },
+      ],
+    },
+    {
       name: "signup",
       description: "Request access for your server.",
       default_member_permissions: "32",
