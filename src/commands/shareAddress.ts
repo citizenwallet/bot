@@ -8,8 +8,9 @@ import { keccak256, toUtf8Bytes } from "ethers";
 import { getCommunity } from "../cw";
 import { createDiscordMention } from "../utils/address";
 import QRCode from "qrcode";
+import { ShareAddressTaskArgs } from "./do/tasks";
 
-export const handleShowAddressCommand = async (
+export const handleShareAddressCommand = async (
   interaction: ChatInputCommandInteraction
 ) => {
   await interaction.reply({ content: "⚙️ Fetching..." });
@@ -20,9 +21,19 @@ export const handleShowAddressCommand = async (
     return;
   }
 
-  const community = getCommunity(alias);
+  await shareAddressCommand(interaction, {
+    name: "showAddress",
+    alias,
+  });
+};
 
+export const shareAddressCommand = async (
+  interaction: ChatInputCommandInteraction,
+  shareAddressTaskArgs: ShareAddressTaskArgs
+) => {
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
+
+  const community = getCommunity(shareAddressTaskArgs.alias);
 
   await interaction.editReply({
     content: `⚙️ Fetching balance for ${community.community.name}...`,

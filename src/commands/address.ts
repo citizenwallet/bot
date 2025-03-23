@@ -1,9 +1,10 @@
 import { getCardAddress } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
 import { keccak256, toUtf8Bytes } from "ethers";
-import { getCommunities } from "../cw";
+import { getCommunities, getCommunity } from "../cw";
 import { generateSafeAccountUrl } from "../utils/safe";
 import { ContentResponse, generateContent } from "../utils/content";
+import { AddressTaskArgs } from "./do/tasks";
 
 export const handleAddressCommand = async (
   interaction: ChatInputCommandInteraction
@@ -20,13 +21,25 @@ export const handleAddressCommand = async (
 
   const communities = getCommunities(serverId);
 
+  await addressCommand(interaction, {
+    name: "address",
+    alias: communities.map((community) => community.community.alias),
+  });
+};
+
+export const addressCommand = async (
+  interaction: ChatInputCommandInteraction,
+  addressTaskArgs: AddressTaskArgs
+) => {
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
   const content: ContentResponse = {
     header: "",
     content: [],
   };
-  for (const community of communities) {
+  for (const alias of addressTaskArgs.alias) {
+    const community = getCommunity(alias);
+
     content.header = `⚙️ Fetching address for ${community.community.name}...`;
     await interaction.editReply({
       content: generateContent(content),

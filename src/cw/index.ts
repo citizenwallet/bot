@@ -79,10 +79,7 @@ export const getCommunitiesWithMinterRole = async (
   if (server.mintingChoices && server.mintingChoices.length > 0) {
     for (const community of getCommunities()) {
       const shouldInclude =
-        !serverId ||
-        server.communityChoices.length === 0 ||
-        server.communityChoices.includes(community.community.alias) ||
-        server.mintingChoices.includes(community.community.alias);
+        !serverId || server.mintingChoices.includes(community.community.alias);
 
       if (!shouldInclude) continue;
 

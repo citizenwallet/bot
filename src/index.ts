@@ -1,20 +1,21 @@
 import express from "express";
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import "dotenv/config";
-import { handleBalanceCommand } from "./commands/balance.js";
-import { handleAddressCommand } from "./commands/address.js";
-import { handleSendCommand } from "./commands/send.js";
-import { registerCommands } from "./register-commands.js";
-import { handleMintCommand } from "./commands/mint.js";
-import { handleBurnCommand } from "./commands/burn.js";
-import { handleTransactionsCommand } from "./commands/transactions.js";
-import { handleAddOwnerCommand } from "./commands/addOwner.js";
-import { handleTokenAutocomplete } from "./autocomplete/token.js";
-import { handleSignupCommand } from "./commands/signup.js";
-import { handleSignupModal } from "./modals/signup.js";
-import { handleShowBalanceCommand } from "./commands/showBalance.js";
-import { handleShowAddressCommand } from "./commands/showAddress.js";
-import { handleBurnManyCommand } from "./commands/burn-many.js";
+import { handleBalanceCommand } from "./commands/balance";
+import { handleAddressCommand } from "./commands/address";
+import { handleSendCommand } from "./commands/send";
+import { registerCommands } from "./register-commands";
+import { handleMintCommand } from "./commands/mint";
+import { handleBurnCommand } from "./commands/burn";
+import { handleTransactionsCommand } from "./commands/transactions";
+import { handleAddOwnerCommand } from "./commands/addOwner";
+import { handleTokenAutocomplete } from "./autocomplete/token";
+import { handleSignupCommand } from "./commands/signup";
+import { handleSignupModal } from "./modals/signup";
+import { handleShowBalanceCommand } from "./commands/shareBalance";
+import { handleShareAddressCommand } from "./commands/shareAddress";
+import { handleBurnManyCommand } from "./commands/burn-many";
+import { handleDoCommand } from "./commands/do";
 
 // Create a new client instance
 const client = new Client({
@@ -75,6 +76,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (interaction.replied) return;
 
   switch (interaction.commandName) {
+    case "do":
+      await handleDoCommand(client, interaction);
+      break;
     case "balance":
       await handleBalanceCommand(interaction);
       break;
@@ -85,7 +89,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await handleAddressCommand(interaction);
       break;
     case "share-address":
-      await handleShowAddressCommand(interaction);
+      await handleShareAddressCommand(interaction);
       break;
     case "transactions":
       await handleTransactionsCommand(interaction);

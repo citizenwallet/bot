@@ -1,9 +1,10 @@
 import { getCardAddress, getAccountBalance } from "@citizenwallet/sdk";
 import { ChatInputCommandInteraction } from "discord.js";
 import { formatUnits, keccak256, toUtf8Bytes } from "ethers";
-import { getCommunities } from "../cw";
+import { getCommunities, getCommunity } from "../cw";
 import { generateSafeAccountUrl } from "../utils/safe";
 import { ContentResponse, generateContent } from "../utils/content";
+import { BalanceTaskArgs } from "./do/tasks";
 
 export const handleBalanceCommand = async (
   interaction: ChatInputCommandInteraction
@@ -20,6 +21,16 @@ export const handleBalanceCommand = async (
 
   const communities = getCommunities(serverId);
 
+  await balanceCommand(interaction, {
+    name: "balance",
+    alias: communities.map((community) => community.community.alias),
+  });
+};
+
+export const balanceCommand = async (
+  interaction: ChatInputCommandInteraction,
+  balanceTaskArgs: BalanceTaskArgs
+) => {
   const hashedUserId = keccak256(toUtf8Bytes(interaction.user.id));
 
   const content: ContentResponse = {
@@ -27,7 +38,9 @@ export const handleBalanceCommand = async (
     content: [],
   };
 
-  for (const community of communities) {
+  for (const alias of balanceTaskArgs.alias) {
+    const community = getCommunity(alias);
+
     content.header = `⚙️ Fetching balance for ${community.community.name}...`;
     await interaction.editReply({
       content: generateContent(content),
