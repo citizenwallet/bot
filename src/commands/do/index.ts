@@ -20,6 +20,14 @@ import {
   ShareBalanceTaskArgs,
   MintTaskArgs,
   BurnTaskArgs,
+  ExampleSendTask,
+  ExampleHelpTask,
+  ExampleBurnTask,
+  ExampleMintTask,
+  ExampleShareBalanceTask,
+  ExampleShareAddressTask,
+  ExampleBalanceTask,
+  ExampleAddressTask,
 } from "./tasks";
 import { sendCommand } from "../send";
 import { addressCommand } from "../address";
@@ -70,6 +78,24 @@ export const handleDoCommand = async (
     case "shareBalance":
       await shareBalanceCommand(interaction, response as ShareBalanceTaskArgs);
       return;
+    case "help": {
+      const helpText = [
+        ExampleSendTask,
+        ExampleAddressTask,
+        ExampleBalanceTask,
+        ExampleShareAddressTask,
+        ExampleShareBalanceTask,
+        ExampleMintTask,
+        ExampleBurnTask,
+        ExampleHelpTask,
+      ].reduce((acc, task) => {
+        return `${acc}\n- ${task.description}`;
+      }, "");
+      await interaction.editReply({
+        content: `Try doing one of the following:\n${helpText}`,
+      });
+      return;
+    }
     case "missingInformation":
       const missingInformationResponse = response as MissingInformationTaskArgs;
       await interaction.editReply({
