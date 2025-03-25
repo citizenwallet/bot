@@ -14,19 +14,21 @@
         "bot-address": "tsx src/bot-address.ts"
     },
     "dependencies": {
-        "@citizenwallet/sdk": "^2.0.73",
+        "@citizenwallet/sdk": "^2.0.74",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "ethers": "^6.13.5",
         "express": "^4.21.2",
         "openai": "^4.89.0",
         "qrcode": "^1.5.4",
-        "sharp": "^0.33.5"
+        "sharp": "^0.33.5",
+        "ws": "^8.18.1"
     },
     "devDependencies": {
         "@types/express": "^5.0.0",
         "@types/node": "^20.11.24",
         "@types/qrcode": "^1.5.5",
+        "@types/ws": "^8.18.0",
         "rimraf": "^6.0.1",
         "tsx": "^4.7.1",
         "typescript": "^5.3.3"

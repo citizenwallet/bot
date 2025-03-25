@@ -24,3 +24,7 @@ export const ChainToEip155ChainPrefix: { [key: string]: string } = {
   "8453": "base",
   "10": "oeth",
 };
+
+export const shortenAddress = (address: string) => {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
