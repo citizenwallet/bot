@@ -8,7 +8,7 @@ import {
 import { getLiveUpdateCommunities } from "../cw";
 import { Client } from "discord.js";
 import { WebSocketEventData, WebSocketListener } from "../cw/ws";
-import { formatUnits } from "ethers";
+import { formatUnits, ZeroAddress } from "ethers";
 import { shortenAddress } from "../utils/address";
 
 export const startLiveUpdates = async (
@@ -63,6 +63,9 @@ const createEventDataHandler = (
       },
     } = data;
 
+    const txType =
+      from === ZeroAddress ? "mint" : to === ZeroAddress ? "burn" : "transfer";
+
     let fromProfile: ProfileWithTokenId | undefined;
     let toProfile: ProfileWithTokenId | undefined;
 
@@ -74,14 +77,32 @@ const createEventDataHandler = (
 
     const formattedAmount = formatUnits(value, token.decimals);
 
-    let content = `
-    ${fromProfile?.name ?? shortenAddress(from)} (@${
-      fromProfile?.username ?? "anonymous"
-    }) sent **${formattedAmount} ${token.symbol}** to ${
-      toProfile?.name ?? shortenAddress(to)
-    } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
-      explorer.url
-    }/tx/${hash}))`;
+    let content = "";
+    if (txType === "mint") {
+      content = `
+      🔨 **${formattedAmount} ${token.symbol}** minted to ${
+        toProfile?.name ?? shortenAddress(to)
+      } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
+        explorer.url
+      }/tx/${hash}))`;
+    } else if (txType === "burn") {
+      content = `
+      🔥 **${formattedAmount} ${token.symbol}** burned by ${
+        fromProfile?.name ?? shortenAddress(from)
+      } (@${fromProfile?.username ?? "anonymous"}) ([View Transaction](${
+        explorer.url
+      }/tx/${hash}))`;
+    } else {
+      content = `
+      🪙 **${formattedAmount} ${token.symbol}** sent from ${
+        fromProfile?.name ?? shortenAddress(from)
+      } (@${fromProfile?.username ?? "anonymous"}) to ${
+        toProfile?.name ?? shortenAddress(to)
+      } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
+        explorer.url
+      }/tx/${hash}))`;
+    }
+
     if (extraData && extraData.description) {
       content += `\n*${extraData.description}*`;
     }
