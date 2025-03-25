@@ -1,10 +1,15 @@
 import {
   CommunityConfig,
   updateInstanceContractsCallData,
+  createInstanceCallData,
 } from "@citizenwallet/sdk";
-import { Wallet } from "ethers";
+import { Wallet, ZeroAddress } from "ethers";
 import { getCommunities } from "./cw";
-import { BundlerService, getAccountAddress } from "@citizenwallet/sdk";
+import {
+  BundlerService,
+  getAccountAddress,
+  instanceOwner,
+} from "@citizenwallet/sdk";
 
 interface CommunityWithContracts {
   community: CommunityConfig;
@@ -62,16 +67,38 @@ const main = async () => {
       throw new Error("Could not find an account for you!");
     }
 
+    const bundler = new BundlerService(communityMap.community);
+    const cardConfig = communityMap.community.primarySafeCardConfig;
+
     console.log("contracts", communityMap.contracts);
+
+    const owner = await instanceOwner(communityMap.community);
+    if (owner === ZeroAddress) {
+      const ccalldata = createInstanceCallData(
+        communityMap.community,
+        communityMap.contracts
+      );
+
+      const hash = await bundler.call(
+        signer,
+        cardConfig.address,
+        signerAccountAddress,
+        ccalldata
+      );
+
+      console.log("submitted:", hash);
+
+      await bundler.awaitSuccess(hash);
+
+      console.log("Instance created");
+
+      continue;
+    }
 
     const calldata = updateInstanceContractsCallData(
       communityMap.community,
       communityMap.contracts
     );
-
-    const bundler = new BundlerService(communityMap.community);
-
-    const cardConfig = communityMap.community.primarySafeCardConfig;
 
     const hash = await bundler.call(
       signer,
