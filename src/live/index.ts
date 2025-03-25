@@ -8,7 +8,7 @@ import {
 import { getLiveUpdateCommunities } from "../cw";
 import { Client } from "discord.js";
 import { WebSocketEventData, WebSocketListener } from "../cw/ws";
-import { formatUnits } from "ethers/lib.commonjs";
+import { formatUnits } from "ethers";
 import { shortenAddress } from "../utils/address";
 
 export const startLiveUpdates = async (
