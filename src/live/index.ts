@@ -77,14 +77,13 @@ const createEventDataHandler = (
     let content = `
     ${fromProfile?.name ?? shortenAddress(from)} (@${
       fromProfile?.username ?? "anonymous"
-    }) sent ${formattedAmount} ${token.symbol} to ${
+    }) sent **${formattedAmount} ${token.symbol}** to ${
       toProfile?.name ?? shortenAddress(to)
     } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
       explorer.url
-    }/tx/${hash}))
-    `;
+    }/tx/${hash}))`;
     if (extraData && extraData.description) {
-      content += `\n${extraData.description}`;
+      content += `\n*${extraData.description}*`;
     }
 
     for (const channelId of channelIds) {
