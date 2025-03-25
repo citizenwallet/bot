@@ -59,6 +59,7 @@ const createEventDataHandler = (
       data: {
         tx_hash: hash,
         data: { from, to, value },
+        extra_data: extraData,
       },
     } = data;
 
@@ -73,7 +74,7 @@ const createEventDataHandler = (
 
     const formattedAmount = formatUnits(value, token.decimals);
 
-    const content = `
+    let content = `
     ${fromProfile?.name ?? shortenAddress(from)} (@${
       fromProfile?.username ?? "anonymous"
     }) sent ${formattedAmount} ${token.symbol} to ${
@@ -82,6 +83,9 @@ const createEventDataHandler = (
       explorer.url
     }/tx/${hash}))
     `;
+    if (extraData && extraData.description) {
+      content += `\n${extraData.description}`;
+    }
 
     for (const channelId of channelIds) {
       const channel = await client.channels.fetch(channelId);
