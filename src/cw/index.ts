@@ -138,3 +138,38 @@ export const getCommunitiesWithMinterRole = async (
 
   return choices;
 };
+
+export const getLiveUpdateCommunities = (): {
+  [key: string]: {
+    community: CommunityConfig;
+    serverChannelIds: {
+      [key: string]: string;
+    };
+  };
+} => {
+  const communities = getCommunities();
+
+  return communities.reduce((acc, community) => {
+    const servers = serverCommunityFilter.filter((s) =>
+      s.liveUpdates?.some((l) => l.alias === community.community.alias)
+    );
+    if (servers.length === 0) {
+      return acc;
+    }
+
+    if (!acc[community.community.alias]) {
+      acc[community.community.alias] = {
+        community,
+        serverChannelIds: {},
+      };
+    }
+
+    for (const server of servers) {
+      for (const liveUpdate of server.liveUpdates) {
+        acc[community.community.alias].serverChannelIds[server.serverId] =
+          liveUpdate.channelId;
+      }
+    }
+    return acc;
+  }, {} as Record<string, { community: CommunityConfig; serverChannelIds: { [key: string]: string } }>);
+};
