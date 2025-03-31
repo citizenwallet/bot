@@ -196,6 +196,26 @@ const getCommands = () =>
       ],
     },
     {
+      name: "revoke-role",
+      description: "Revoke role if in debts!",
+      default_member_permissions: "32",
+      options: [
+        {
+          name: "token",
+          description: "The token of debts",
+          type: 3, // STRING type
+          required: true,
+          autocomplete: true,
+        },
+        {
+          name: "role",
+          description: "The role to revoke if user has not burnt enough tokens",
+          type: 3, // STRING type
+          required: true,
+        },
+      ],
+    },
+    {
       name: "add-owner",
       description: "Add an owner to your Safe! 🔑",
       options: [

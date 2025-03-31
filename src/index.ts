@@ -109,6 +109,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     case "burn-many":
       await handleBurnManyCommand(client, interaction);
       break;
+    case "revoke-role":
+      await handleRevokeRoleCommand(client, interaction);
+      break;
     case "add-owner":
       await handleAddOwnerCommand(client, interaction);
       break;
