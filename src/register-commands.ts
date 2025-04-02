@@ -196,6 +196,32 @@ const getCommands = () =>
       ],
     },
     {
+      name: "burn-or-revoke-role",
+      description: "Burn tokens or revoke role if not enough!",
+      default_member_permissions: "32",
+      options: [
+        {
+          name: "token",
+          description: "The token of debts",
+          type: 3, // STRING type
+          required: true,
+          autocomplete: true,
+        },
+        {
+          name: "amount",
+          description: "The amount to burn",
+          type: 10, // NUMBER type
+          required: true,
+        },
+        {
+          name: "role",
+          description: "The role to revoke if user has not burnt enough tokens",
+          type: 8, // ROLE type
+          required: true,
+        },
+      ],
+    },
+    {
       name: "add-owner",
       description: "Add an owner to your Safe! 🔑",
       options: [
