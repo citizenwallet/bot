@@ -4,15 +4,19 @@ import {
   getAccountBalance,
   getCardAddress,
 } from "@citizenwallet/sdk";
-import { ChatInputCommandInteraction, Client } from "discord.js";
-import { ethers, keccak256, toUtf8Bytes, Wallet } from "ethers";
+import {
+  APIRole,
+  ChatInputCommandInteraction,
+  Client,
+  GuildMember,
+  Role,
+} from "discord.js";
+import { keccak256, toUtf8Bytes, Wallet } from "ethers";
 import { getCommunity } from "../cw";
-import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
-import { getAddressFromUserInputWithReplies } from "./conversion/address";
 
-export const handleRevokeRoleCommand = async (
+export const handleBurnOrRevokeRoleCommand = async (
   client: Client,
   interaction: ChatInputCommandInteraction
 ) => {
@@ -27,7 +31,13 @@ export const handleRevokeRoleCommand = async (
     return;
   }
 
-  const role = interaction.options.getString("role");
+  const amount = interaction.options.getNumber("amount");
+  if (!amount) {
+    await interaction.editReply("You need to specify an amount!");
+    return;
+  }
+
+  const role = interaction.options.getRole("role");
   if (!role) {
     await interaction.editReply("You need to specify a role!");
     return;
@@ -37,9 +47,7 @@ export const handleRevokeRoleCommand = async (
 
   const community = getCommunity(alias);
   const token = community.primaryToken;
-
-  const guild = await client.guilds.fetch({ guild: interaction.guildId });
-  const users = await guild.members.fetch();
+  const guild = await client.guilds.fetch(interaction.guildId);
 
   const privateKey = process.env.BOT_PRIVATE_KEY;
   if (!privateKey) {
@@ -63,43 +71,67 @@ export const handleRevokeRoleCommand = async (
   }
 
   // signer setup done
-  await interaction.editReply(createProgressSteps(1));
 
   const content: ContentResponse = {
-    header: "",
+    header: createProgressSteps(1),
     content: [],
   };
+  await interaction.editReply({
+    content: generateContent(content),
+  });
+
+  const users = guild.members.cache.filter((member) => {
+    // check whether member is not a bot and has the given role
+    return !member.user.bot && member.roles.cache.has(role.id);
+  });
 
   for (const [userId, user] of users) {
     const hashedUserId = keccak256(toUtf8Bytes(userId));
 
     const cardAddress = await getCardAddress(community, hashedUserId);
     if (!cardAddress) {
-      content.content.push("Could not find an account to send to!");
+      content.content.push(
+        `Could not find an account to send to for user ${user.user.displayName}!`
+      );
       await interaction.editReply({
         content: generateContent(content),
       });
       continue;
     }
 
+    content.header = createProgressSteps(2);
+    await interaction.editReply({
+      content: generateContent(content),
+    });
+
     // check user status
-    const burnStatus = await getBurnStatus(user, role);
+    const burnStatus = { status: "new", remainingBurns: amount }; //await getBurnStatus(user, role);
+
     if (burnStatus.status === "burnt") {
       content.content.push(`${user} has already burned`);
       await interaction.editReply({
         content: generateContent(content),
       });
-      continue;
     } else {
       const balance = await getAccountBalance(community, cardAddress);
+
+      content.content.push(
+        `Handling user: ${user}, balance: ${balance} ${token.symbol}`
+      );
+      await interaction.editReply({
+        content: generateContent(content),
+      });
+
       if (burnStatus.remainingBurns > balance) {
-        content.content.push(`${user} has not enough`);
-        await interaction.editReply({
-          content: generateContent(content),
-        });
         await guild.members.removeRole({
           user: user,
-          role: role,
+          role: role.id,
+        });
+        content.content.push(
+          `${user} has not enough ${token.symbol}, removed role ${role.name}.`
+        );
+        await interaction.editReply({
+          content: generateContent(content),
         });
       } else {
         const bundler = new BundlerService(community);
@@ -113,15 +145,33 @@ export const handleRevokeRoleCommand = async (
             burnStatus.remainingBurns.toString(),
             message
           );
-        } catch (e) {}
+          content.content.push(
+            `Burnt ${burnStatus.remainingBurns.toString()} ${
+              token.symbol
+            } for ${user}: ${hash}`
+          );
+          await interaction.editReply({
+            content: generateContent(content),
+          });
+        } catch (e) {
+          content.content.push(
+            `Failed to burnt ${burnStatus.remainingBurns.toString()} ${
+              token.symbol
+            } for ${user} (${e.message})`
+          );
+          await interaction.editReply({
+            content: generateContent(content),
+          });
+        }
       }
     }
-  }
-  content.header = createProgressSteps(3);
 
-  await interaction.editReply({
-    content: generateContent(content),
-  });
+    content.header = createProgressSteps(3);
+
+    await interaction.editReply({
+      content: generateContent(content),
+    });
+  }
 
   content.header = "✅ Done";
 
@@ -130,9 +180,12 @@ export const handleRevokeRoleCommand = async (
   });
 };
 
-const getBurnStatus = async (user: string, role: string) => {
+const getBurnStatus = async (
+  user: GuildMember,
+  role: NonNullable<Role | APIRole>
+) => {
   return {
-    status: "burnt",
-    remainingBurns: 0,
+    status: "partial",
+    remainingBurns: 2,
   };
 };

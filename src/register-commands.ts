@@ -196,8 +196,8 @@ const getCommands = () =>
       ],
     },
     {
-      name: "revoke-role",
-      description: "Revoke role if in debts!",
+      name: "burn-or-revoke-role",
+      description: "Burn tokens or revoke role if not enough!",
       default_member_permissions: "32",
       options: [
         {
@@ -208,9 +208,15 @@ const getCommands = () =>
           autocomplete: true,
         },
         {
+          name: "amount",
+          description: "The amount to burn",
+          type: 10, // NUMBER type
+          required: true,
+        },
+        {
           name: "role",
           description: "The role to revoke if user has not burnt enough tokens",
-          type: 3, // STRING type
+          type: 8, // ROLE type
           required: true,
         },
       ],
