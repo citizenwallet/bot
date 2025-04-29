@@ -5,7 +5,7 @@ import {
   tokenTransferEventTopic,
   tokenTransferSingleEventTopic,
 } from "@citizenwallet/sdk";
-import { getLiveUpdateCommunities } from "../cw";
+import { getLiveUpdateCommunities, LiveUpdateChannel } from "../cw";
 import { Client } from "discord.js";
 import { WebSocketEventData, WebSocketListener } from "../cw/ws";
 import { formatUnits, ZeroAddress } from "ethers";
@@ -49,7 +49,7 @@ export const startLiveUpdates = async (
 const createEventDataHandler = (
   client: Client,
   community: CommunityConfig,
-  channelIds: string[]
+  liveUpdateChannels: LiveUpdateChannel[]
 ) => {
   return async (data: WebSocketEventData) => {
     const token = community.primaryToken;
@@ -103,23 +103,26 @@ const createEventDataHandler = (
       }/tx/${hash}))`;
     }
 
-    if (extraData && extraData.description) {
-      content += `\n*${extraData.description}*`;
-    }
+    for (const liveUpdateChannel of liveUpdateChannels) {
+      let contentWithDescription = `${content}`;
+      if (extraData && extraData.description) {
+        contentWithDescription += !!liveUpdateChannel.privateDescriptions
+          ? "---"
+          : `\n*${extraData.description}*`;
+      }
 
-    for (const channelId of channelIds) {
-      const channel = await client.channels.fetch(channelId);
+      const channel = await client.channels.fetch(liveUpdateChannel.channelId);
       if (!channel) {
-        console.log(`Channel ${channelId} not found`);
+        console.log(`Channel ${liveUpdateChannel.channelId} not found`);
         continue;
       }
 
       if (!channel.isSendable()) {
-        console.log(`Channel ${channelId} is not sendable`);
+        console.log(`Channel ${liveUpdateChannel.channelId} is not sendable`);
         continue;
       }
 
-      const message = await channel.send(content);
+      const message = await channel.send(contentWithDescription);
       console.log(message);
     }
   };
