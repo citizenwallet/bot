@@ -22,6 +22,10 @@
             {
                 "channelId": "1356149878803271821",
                 "alias": "gratitude"
+            },
+            {
+                "channelId": "1366820951118839838",
+                "alias": "wallet.pay.brussels"
             }
         ]
     },
