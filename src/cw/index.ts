@@ -165,7 +165,11 @@ export const getLiveUpdateCommunities = (): {
     }
 
     for (const server of servers) {
-      for (const liveUpdate of server.liveUpdates) {
+      const liveUpdates = server.liveUpdates?.filter(
+        (l) => l.alias === community.community.alias
+      );
+
+      for (const liveUpdate of liveUpdates) {
         acc[community.community.alias].serverChannelIds[server.serverId] =
           liveUpdate.channelId;
       }
