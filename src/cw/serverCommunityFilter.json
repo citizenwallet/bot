@@ -26,6 +26,15 @@
             {
                 "channelId": "1366820951118839838",
                 "alias": "wallet.pay.brussels"
+            },
+            {
+                "channelId": "1366832271272972440",
+                "alias": "wallet.commonshub.brussels",
+                "privateDescriptions": true
+            },
+            {
+                "channelId": "1366837373488332840",
+                "alias": "txirrin"
             }
         ]
     },
