@@ -35,6 +35,11 @@
             {
                 "channelId": "1366837373488332840",
                 "alias": "txirrin"
+            },
+            {
+                "channelId": "1366877525413859529",
+                "alias": "wallet.sfluv.org",
+                "privateDescriptions": true
             }
         ]
     },
