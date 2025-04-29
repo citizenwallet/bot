@@ -25,12 +25,18 @@ describe("getLiveUpdateCommunities", () => {
 
     // Check the serverChannelIds for 'ctzn' community
     expect(result["ctzn"].serverChannelIds).toEqual({
-      "1125394118827331634": "1354113011492851805",
+      "1125394118827331634": {
+        channelId: "1354113011492851805",
+        alias: "ctzn",
+      },
     });
 
     // Check the serverChannelIds for 'gratitude' community
     expect(result["gratitude"].serverChannelIds).toEqual({
-      "1125394118827331634": "1356149878803271821",
+      "1125394118827331634": {
+        channelId: "1356149878803271821",
+        alias: "gratitude",
+      },
     });
 
     // Verify that communities without live updates are not included
