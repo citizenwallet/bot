@@ -33,23 +33,6 @@
         ]
     },
     {
-        "serverId": "1280532848604086365",
-        "serverName": "Commons Hub",
-        "communityChoices": [
-            "wallet.commonshub.brussels",
-            "wallet.pay.brussels"
-        ],
-        "mintingChoices": [
-            "wallet.commonshub.brussels"
-        ],
-        "liveUpdates": [
-            {
-                "channelId": "1354115945718878269",
-                "alias": "wallet.commonshub.brussels"
-            }
-        ]
-    },
-    {
         "serverId": "1306205090998386698",
         "serverName": "Test Server",
         "communityChoices": []
