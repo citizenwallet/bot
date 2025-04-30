@@ -107,7 +107,7 @@ const createEventDataHandler = (
       let contentWithDescription = `${content}`;
       if (extraData && extraData.description) {
         contentWithDescription += !!liveUpdateChannel.privateDescriptions
-          ? "---"
+          ? "\n---"
           : `\n*${extraData.description}*`;
       }
 
