@@ -29,3 +29,15 @@ A Discord bot powered by discord.js and TypeScript.
    ```
 
 For development with auto-restart:
+
+```bash
+npm dev
+```
+
+## Local development
+
+Run cloudflared in a terminal and add he tunnel url to Url mapping in discord developer console
+
+```bash
+docker run cloudflare/cloudflared:latest tunnel --url http://localhost:3000
+```
