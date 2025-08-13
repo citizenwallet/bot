@@ -247,6 +247,86 @@
     },
     {
         "community": {
+            "name": "Citizen Wallet Token (CTW)",
+            "description": "The token recognizing Citizen Wallet contributions.",
+            "url": "https://citizenwallet.xyz",
+            "alias": "ctw",
+            "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/ctzn.svg",
+            "theme": {
+                "primary": "#9563D3"
+            },
+            "profile": {
+                "address": "0xBd90e5bD392e469D91EF7a1e1F3aa44571a2b5d9",
+                "chain_id": 42161
+            },
+            "primary_token": {
+                "address": "0xA8bdE712d757d6b66E2849c00200F5C87AD3d3e6",
+                "chain_id": 42161
+            },
+            "primary_account_factory": {
+                "address": "0x7cC54D54bBFc65d1f0af7ACee5e4042654AF8185",
+                "chain_id": 42161
+            },
+            "primary_card_manager": {
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
+                "chain_id": 42161
+            }
+        },
+        "tokens": {
+            "42161:0xA8bdE712d757d6b66E2849c00200F5C87AD3d3e6": {
+                "standard": "erc20",
+                "name": "Citizen Wallet Token",
+                "address": "0xA8bdE712d757d6b66E2849c00200F5C87AD3d3e6",
+                "symbol": "CTW",
+                "decimals": 6,
+                "chain_id": 42161
+            }
+        },
+        "scan": {
+            "url": "https://polygonscan.com",
+            "name": "Polygon Explorer"
+        },
+        "accounts": {
+            "42161:0x7cC54D54bBFc65d1f0af7ACee5e4042654AF8185": {
+                "chain_id": 42161,
+                "entrypoint_address": "0x7079253c0358eF9Fd87E16488299Ef6e06F403B6",
+                "paymaster_address": "0x2f64DcE2508E3b72a52fFe1c50f3E490139b8009",
+                "account_factory_address": "0x7cC54D54bBFc65d1f0af7ACee5e4042654AF8185",
+                "paymaster_type": "cw-safe"
+            }
+        },
+        "cards": {
+            "42161:0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28": {
+                "chain_id": 42161,
+                "instance_id": "cw-discord-1",
+                "address": "0xBA861e2DABd8316cf11Ae7CdA101d110CF581f28",
+                "type": "safe"
+            }
+        },
+        "chains": {
+            "42161": {
+                "id": 42161,
+                "node": {
+                    "url": "https://42161.engine.citizenwallet.xyz",
+                    "ws_url": "wss://42161.engine.citizenwallet.xyz"
+                }
+            }
+        },
+        "ipfs": {
+            "url": "https://ipfs.internal.citizenwallet.xyz"
+        },
+        "plugins": [
+            {
+                "name": "About",
+                "icon": "https://assets.citizenwallet.xyz/wallet-config/_images/ctzn.svg",
+                "url": "https://discord.citizenwallet.xyz"
+            }
+        ],
+        "config_location": "https://config.internal.citizenwallet.xyz/v4/ctw.json",
+        "version": 4
+    },
+    {
+        "community": {
             "name": "Monerium EURe on Gnosis",
             "description": "A community for EURe on Gnosis",
             "url": "https://monerium.com/",
@@ -409,7 +489,7 @@
             "description": "BREAD is a digital community token and solidarity primitive developed by Breadchain Cooperative that generates yield for post-capitalist organizations",
             "url": "https://breadchain.xyz/",
             "alias": "bread",
-            "logo": "https://bread.citizenwallet.xyz/uploads/logo.svg",
+            "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/bread.svg",
             "profile": {
                 "address": "0x6b3a1f4277391526413F583c23D5B9EF4d2fE986",
                 "chain_id": 100
@@ -448,6 +528,13 @@
                 "paymaster_address": "0x5987e57e85014B5A56C880313580346c20a5d1c1",
                 "account_factory_address": "0x940Cbb155161dc0C4aade27a4826a16Ed8ca0cb2",
                 "paymaster_type": "cw-safe"
+            },
+            "100:0xAE76B1C6818c1DD81E20ccefD3e72B773068ABc9": {
+                "chain_id": 100,
+                "entrypoint_address": "0xcA0a75EF803a364C83c5EAE7Eb889aE7419c9dF2",
+                "paymaster_address": "0xbE2Cb3358aa14621134e923B68b8429315368E32",
+                "account_factory_address": "0xAE76B1C6818c1DD81E20ccefD3e72B773068ABc9",
+                "paymaster_type": "cw"
             }
         },
         "cards": {
