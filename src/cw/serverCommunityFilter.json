@@ -12,7 +12,8 @@
         "serverName": "Citizen Wallet",
         "communityChoices": [],
         "mintingChoices": [
-            "gratitude"
+            "gratitude",
+            "cwt"
         ],
         "liveUpdates": [
             {
