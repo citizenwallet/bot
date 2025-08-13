@@ -247,10 +247,10 @@
     },
     {
         "community": {
-            "name": "Citizen Wallet Token (CTW)",
+            "name": "Citizen Wallet Token (CWT)",
             "description": "The token recognizing Citizen Wallet contributions.",
             "url": "https://citizenwallet.xyz",
-            "alias": "ctw",
+            "alias": "cwt",
             "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/ctzn.svg",
             "theme": {
                 "primary": "#9563D3"
@@ -277,7 +277,7 @@
                 "standard": "erc20",
                 "name": "Citizen Wallet Token",
                 "address": "0xA8bdE712d757d6b66E2849c00200F5C87AD3d3e6",
-                "symbol": "CTW",
+                "symbol": "CWT",
                 "decimals": 6,
                 "chain_id": 42161
             }
