@@ -42,6 +42,11 @@
                 "alias": "txirrin"
             },
             {
+                "channelId": "1407738664976515123",
+                "alias": "wallet.berachain.sfluv.org",
+                "privateDescriptions": true
+            },
+            {
                 "channelId": "1366877525413859529",
                 "alias": "wallet.sfluv.org",
                 "privateDescriptions": true
