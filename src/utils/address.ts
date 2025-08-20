@@ -23,6 +23,7 @@ export const ChainToEip155ChainPrefix: { [key: string]: string } = {
   "42220": "celo",
   "8453": "base",
   "10": "oeth",
+  "80094": "berachain",
 };
 
 export const shortenAddress = (address: string) => {
