@@ -7,6 +7,7 @@ import { ContentResponse } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
 import { getAddressFromUserInputWithReplies } from "./conversion/address";
 import { BurnTaskArgs } from "./do/tasks";
+import { getExplorerBaseUrl } from "../utils/explorer";
 
 export const handleBurnCommand = async (
   client: Client,
@@ -98,7 +99,7 @@ export const handleBurnCommand = async (
 
     await interaction.editReply(createProgressSteps(3));
 
-    const explorer = community.explorer;
+    const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
     if (userId) {
       try {
@@ -109,9 +110,7 @@ export const handleBurnCommand = async (
         await dmChannel.send(
           `${createDiscordMention(interaction.user.id)} burned **${amount} ${
             token.symbol
-          }** from your account ([View Transaction](${
-            explorer.url
-          }/tx/${hash}))`
+          }** from your account ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
         );
 
         if (message) {
@@ -125,7 +124,7 @@ export const handleBurnCommand = async (
     return interaction.editReply({
       content: `✅ Burned **${amount} ${token.symbol}** from ${
         profile?.name ?? profile?.username ?? user
-      } ([View Transaction](${explorer.url}/tx/${hash}))`,
+      } ([View Transaction](${explorerBaseUrl}/tx/${hash}))`,
     });
   } catch (error) {
     console.error("Failed to burn", error);
@@ -198,7 +197,7 @@ export const burnCommand = async (
 
     await interaction.editReply(createProgressSteps(3));
 
-    const explorer = community.explorer;
+    const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
     if (userId) {
       try {
@@ -209,9 +208,7 @@ export const burnCommand = async (
         await dmChannel.send(
           `${createDiscordMention(interaction.user.id)} burned **${amount} ${
             token.symbol
-          }** from your account ([View Transaction](${
-            explorer.url
-          }/tx/${hash}))`
+          }** from your account ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
         );
 
         if (message) {
@@ -225,7 +222,7 @@ export const burnCommand = async (
     await interaction.editReply({
       content: `✅ Burned **${amount} ${token.symbol}** from ${
         profile?.name ?? profile?.username ?? user
-      } ([View Transaction](${explorer.url}/tx/${hash}))`,
+      } ([View Transaction](${explorerBaseUrl}/tx/${hash}))`,
     });
 
     return;

@@ -10,6 +10,7 @@ import { Client } from "discord.js";
 import { WebSocketEventData, WebSocketListener } from "../cw/ws";
 import { formatUnits, ZeroAddress } from "ethers";
 import { shortenAddress } from "../utils/address";
+import { getExplorerBaseUrl } from "../utils/explorer";
 
 export const startLiveUpdates = async (
   client: Client
@@ -53,7 +54,7 @@ const createEventDataHandler = (
 ) => {
   return async (data: WebSocketEventData) => {
     const token = community.primaryToken;
-    const explorer = community.explorer;
+    const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
     const {
       data: {
@@ -82,25 +83,25 @@ const createEventDataHandler = (
       content = `
       🔨 **${formattedAmount} ${token.symbol}** minted to ${
         toProfile?.name ?? shortenAddress(to)
-      } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
-        explorer.url
-      }/tx/${hash}))`;
+      } (@${
+        toProfile?.username ?? "anonymous"
+      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
     } else if (txType === "burn") {
       content = `
       🔥 **${formattedAmount} ${token.symbol}** burned by ${
         fromProfile?.name ?? shortenAddress(from)
-      } (@${fromProfile?.username ?? "anonymous"}) ([View Transaction](${
-        explorer.url
-      }/tx/${hash}))`;
+      } (@${
+        fromProfile?.username ?? "anonymous"
+      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
     } else {
       content = `
       🪙 **${formattedAmount} ${token.symbol}** sent from ${
         fromProfile?.name ?? shortenAddress(from)
       } (@${fromProfile?.username ?? "anonymous"}) to ${
         toProfile?.name ?? shortenAddress(to)
-      } (@${toProfile?.username ?? "anonymous"}) ([View Transaction](${
-        explorer.url
-      }/tx/${hash}))`;
+      } (@${
+        toProfile?.username ?? "anonymous"
+      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
     }
 
     for (const liveUpdateChannel of liveUpdateChannels) {

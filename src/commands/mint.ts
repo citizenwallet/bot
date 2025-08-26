@@ -7,6 +7,7 @@ import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
 import { getAddressFromUserInputWithReplies } from "./conversion/address";
 import { MintTaskArgs } from "./do/tasks";
+import { getExplorerBaseUrl } from "../utils/explorer";
 
 export const handleMintCommand = async (
   client: Client,
@@ -131,7 +132,7 @@ export const mintCommand = async (
         content: generateContent(content),
       });
 
-      const explorer = community.explorer;
+      const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
       if (receiverUserId) {
         try {
@@ -142,9 +143,7 @@ export const mintCommand = async (
           await dmChannel.send(
             `${createDiscordMention(interaction.user.id)} minted **${amount} ${
               token.symbol
-            }** to your account ([View Transaction](${
-              explorer.url
-            }/tx/${hash}))`
+            }** to your account ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
           );
 
           if (message) {
@@ -159,7 +158,7 @@ export const mintCommand = async (
       content.content.push(
         `**${amount} ${token.symbol}** to ${
           profile?.name ?? profile?.username ?? user
-        } ([View Transaction](${explorer.url}/tx/${hash}))`
+        } ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
       );
 
       await interaction.editReply({
