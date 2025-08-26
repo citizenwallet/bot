@@ -6,6 +6,7 @@ import { createDiscordMention } from "../utils/address";
 import { ContentResponse, generateContent } from "../utils/content";
 import { createProgressSteps } from "../utils/progress";
 import { getAddressFromUserInputWithReplies } from "./conversion/address";
+import { getExplorerBaseUrl } from "../utils/explorer";
 
 export const handleBurnManyCommand = async (
   client: Client,
@@ -106,7 +107,7 @@ export const handleBurnManyCommand = async (
         message
       );
 
-      const explorer = community.explorer;
+      const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
       if (userId) {
         // send a DM to the receiver
@@ -118,9 +119,7 @@ export const handleBurnManyCommand = async (
           await dmChannel.send(
             `${createDiscordMention(interaction.user.id)} burned **${amount} ${
               token.symbol
-            }** from your account ([View Transaction](${
-              explorer.url
-            }/tx/${hash}))`
+            }** from your account ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
           );
 
           if (message) {
@@ -134,7 +133,7 @@ export const handleBurnManyCommand = async (
       content.content.push(
         `✅ Burned **${amount} ${token.symbol}** from ${
           profile?.name ?? profile?.username ?? user
-        } ([View Transaction](${explorer.url}/tx/${hash}))`
+        } ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
       );
 
       await interaction.editReply({

@@ -26,6 +26,7 @@ import { createProgressSteps } from "../utils/progress";
 import { ContentResponse, generateContent } from "../utils/content";
 import { SendTaskArgs } from "./do/tasks";
 import { getAddressFromUserInputWithReplies } from "./conversion/address";
+import { getExplorerBaseUrl } from "../utils/explorer";
 
 export const handleSendCommand = async (
   client: Client,
@@ -223,7 +224,7 @@ export const sendCommand = async (
         content: generateContent(content),
       });
 
-      const explorer = community.explorer;
+      const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
       if (userId) {
         try {
@@ -234,9 +235,7 @@ export const sendCommand = async (
           await dmChannel.send(
             `${createDiscordMention(interaction.user.id)} sent **${amount} ${
               token.symbol
-            }** to your account ([View Transaction](${
-              explorer.url
-            }/tx/${hash}))`
+            }** to your account ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
           );
 
           if (message) {
@@ -251,7 +250,7 @@ export const sendCommand = async (
       content.content.push(
         `**${amount} ${token.symbol}** to ${
           profile?.name ?? profile?.username ?? user
-        } ([View Transaction](${explorer.url}/tx/${hash}))`
+        } ([View Transaction](${explorerBaseUrl}/tx/${hash}))`
       );
 
       await interaction.editReply({
