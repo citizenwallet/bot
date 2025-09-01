@@ -16,7 +16,7 @@ import {
 } from "../commands/do/tasks";
 
 const client = new OpenAI({
-  apiKey: process.env["OPENAI_API_KEY"],
+  apiKey: process.env["OPENAI_API_KEY"] || "invalid key",
 });
 
 const constructSystemPrompt = (

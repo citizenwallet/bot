@@ -17,6 +17,7 @@ import { handleShareAddressCommand } from "./commands/shareAddress";
 import { handleBurnManyCommand } from "./commands/burn-many";
 import { handleDoCommand } from "./commands/do";
 import { startLiveUpdates } from "./live";
+import { handleBurnOrRevokeRoleCommand } from "./commands/burn-or-revoke-role";
 
 // Create a new client instance
 const client = new Client({
@@ -108,6 +109,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       break;
     case "burn-many":
       await handleBurnManyCommand(client, interaction);
+      break;
+    case "burn-or-revoke-role":
+      await handleBurnOrRevokeRoleCommand(client, interaction);
       break;
     case "add-owner":
       await handleAddOwnerCommand(client, interaction);
