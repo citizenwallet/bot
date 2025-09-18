@@ -10,7 +10,15 @@
     {
         "serverId": "1125394118827331634",
         "serverName": "Citizen Wallet",
-        "communityChoices": [],
+        "communityChoices": [
+            "ctzn",
+            "cwt",
+            "eure.gnosis",
+            "gratitude",
+            "wallet.pay.brussels",
+            "txirrin",
+            "bread"
+        ],
         "mintingChoices": [
             "gratitude",
             "cwt"
@@ -49,6 +57,16 @@
             {
                 "channelId": "1366877525413859529",
                 "alias": "wallet.sfluv.org",
+                "privateDescriptions": true
+            },
+            {
+                "channelId": "1418197513873264781",
+                "alias": "rooted",
+                "privateDescriptions": true
+            },
+            {
+                "channelId": "1415655671973679244",
+                "alias": "laborhour",
                 "privateDescriptions": true
             }
         ]
