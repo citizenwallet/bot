@@ -15,6 +15,10 @@ import { getExplorerBaseUrl } from "../utils/explorer";
 export const startLiveUpdates = async (
   client: Client
 ): Promise<{ [key: string]: WebSocketListener }> => {
+  if (process.env.NODE_ENV !== "production") {
+    return {};
+  }
+
   const communities = getLiveUpdateCommunities();
 
   const listeners: { [key: string]: WebSocketListener } = {};
