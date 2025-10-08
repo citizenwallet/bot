@@ -76,6 +76,12 @@
         "serverName": "Crypto Leftists",
         "communityChoices": [
             "bread"
+        ],
+        "liveUpdates": [
+            {
+                "channelId": "1423104395695886447",
+                "alias": "bread"
+            }
         ]
     },
     {
