@@ -179,12 +179,13 @@ export const getLiveUpdateCommunities = (): {
 
       for (const liveUpdate of liveUpdates) {
         if (liveUpdate.project) {
-          acc[`${community.community.alias}-${liveUpdate.project}`].project =
-            liveUpdate.project;
-          acc[
-            `${community.community.alias}-${liveUpdate.project}`
-          ].serverChannelIds[server.serverId] = liveUpdate;
-
+          acc[`${community.community.alias}-${liveUpdate.project}`] = {
+            community,
+            project: liveUpdate.project,
+            serverChannelIds: {
+              [server.serverId]: liveUpdate,
+            },
+          };
           continue;
         }
         acc[community.community.alias].serverChannelIds[server.serverId] =
