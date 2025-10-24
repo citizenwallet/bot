@@ -27,6 +27,10 @@ export const startLiveUpdates = async (
   console.log(communities);
 
   for (const community of Object.values(communities)) {
+    let key = community.community.community.alias;
+    if (community.project) {
+      key += `-${community.project}`;
+    }
     let token = community.community.primaryToken;
     if (community.project) {
       const potentialToken = Object.values(community.community.tokens).find(
@@ -49,7 +53,7 @@ export const startLiveUpdates = async (
 
     console.log(eventUrl);
 
-    listeners[community.community.community.alias] = new WebSocketListener(
+    listeners[key] = new WebSocketListener(
       eventUrl,
       createEventDataHandler(
         client,
