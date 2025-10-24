@@ -68,6 +68,12 @@
                 "channelId": "1415655671973679244",
                 "alias": "laborhour",
                 "privateDescriptions": true
+            },
+            {
+                "channelId": "1431185625134141460",
+                "alias": "wallet.pay.brussels",
+                "project": "class",
+                "privateDescriptions": true
             }
         ]
     },

@@ -1,5 +1,6 @@
 import {
   CommunityConfig,
+  ConfigToken,
   getProfileFromAddress,
   ProfileWithTokenId,
   tokenTransferEventTopic,
@@ -26,9 +27,19 @@ export const startLiveUpdates = async (
   console.log(communities);
 
   for (const community of Object.values(communities)) {
-    const token = community.community.primaryToken;
+    let token = community.community.primaryToken;
+    if (community.project) {
+      const potentialToken = Object.values(community.community.tokens).find(
+        (t: ConfigToken) => t.project === community.project
+      );
+      if (potentialToken) {
+        token = potentialToken;
+      } else {
+        continue;
+      }
+    }
     const topic =
-      community.community.primaryToken.standard === "erc20"
+      token.standard === "erc20"
         ? tokenTransferEventTopic
         : tokenTransferSingleEventTopic;
 
@@ -43,6 +54,7 @@ export const startLiveUpdates = async (
       createEventDataHandler(
         client,
         community.community,
+        token,
         Object.values(community.serverChannelIds)
       )
     );
@@ -54,10 +66,10 @@ export const startLiveUpdates = async (
 const createEventDataHandler = (
   client: Client,
   community: CommunityConfig,
+  token: ConfigToken,
   liveUpdateChannels: LiveUpdateChannel[]
 ) => {
   return async (data: WebSocketEventData) => {
-    const token = community.primaryToken;
     const explorerBaseUrl = getExplorerBaseUrl(token.chain_id);
 
     const {
