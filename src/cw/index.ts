@@ -142,12 +142,14 @@ export const getCommunitiesWithMinterRole = async (
 export interface LiveUpdateChannel {
   channelId: string;
   alias: string;
+  project?: string;
   privateDescriptions?: boolean;
 }
 
 export const getLiveUpdateCommunities = (): {
   [key: string]: {
     community: CommunityConfig;
+    project?: string;
     serverChannelIds: {
       [key: string]: LiveUpdateChannel;
     };
@@ -171,15 +173,18 @@ export const getLiveUpdateCommunities = (): {
     }
 
     for (const server of servers) {
-      const liveUpdates = server.liveUpdates?.filter(
+      const liveUpdates: LiveUpdateChannel[] = server.liveUpdates?.filter(
         (l) => l.alias === community.community.alias
       );
 
       for (const liveUpdate of liveUpdates) {
+        if (liveUpdate.project) {
+          acc[community.community.alias].project = liveUpdate.project;
+        }
         acc[community.community.alias].serverChannelIds[server.serverId] =
           liveUpdate;
       }
     }
     return acc;
-  }, {} as Record<string, { community: CommunityConfig; serverChannelIds: { [key: string]: LiveUpdateChannel } }>);
+  }, {} as Record<string, { community: CommunityConfig; project?: string; serverChannelIds: { [key: string]: LiveUpdateChannel } }>);
 };

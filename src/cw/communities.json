@@ -117,7 +117,21 @@
                 "address": "0x5815E61eF72c9E6107b5c5A05FD121F334f7a7f1",
                 "symbol": "EURb",
                 "decimals": 6,
-                "chain_id": 100
+                "chain_id": 100,
+                "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/wallet.pay.brussels.png",
+                "color": "#3431c4",
+                "project": "main"
+            },
+            "100:0x601D2Dc12bE367d1653d803827875c2Bcaeb4A20": {
+                "standard": "erc20",
+                "name": "La Caisse Locale d'Alimentation Solidaire de Schaerbeek",
+                "address": "0x601D2Dc12bE367d1653d803827875c2Bcaeb4A20",
+                "symbol": "CLASS",
+                "decimals": 6,
+                "chain_id": 100,
+                "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/class.png",
+                "color": "#ec6825",
+                "project": "class"
             }
         },
         "scan": {
