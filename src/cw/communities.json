@@ -132,6 +132,17 @@
                 "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/class.png",
                 "color": "#ec6825",
                 "project": "class"
+            },
+            "100:0xFf7c0c7549f0f163E012aB6faD575C1C7e5563B1": {
+                "standard": "erc20",
+                "name": "The Grace community",
+                "address": "0xFf7c0c7549f0f163E012aB6faD575C1C7e5563B1",
+                "symbol": "Grace",
+                "decimals": 6,
+                "chain_id": 100,
+                "logo": "https://assets.citizenwallet.xyz/wallet-config/_images/grace.svg",
+                "color": "#FF4666",
+                "project": "grace"
             }
         },
         "scan": {

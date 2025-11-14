@@ -98,33 +98,48 @@ const createEventDataHandler = (
 
     const formattedAmount = formatUnits(value, token.decimals);
 
-    let content = "";
-    if (txType === "mint") {
-      content = `
-      🔨 **${formattedAmount} ${token.symbol}** minted to ${
-        toProfile?.name ?? shortenAddress(to)
-      } (@${
-        toProfile?.username ?? "anonymous"
-      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
-    } else if (txType === "burn") {
-      content = `
-      🔥 **${formattedAmount} ${token.symbol}** burned by ${
-        fromProfile?.name ?? shortenAddress(from)
-      } (@${
-        fromProfile?.username ?? "anonymous"
-      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
-    } else {
-      content = `
-      🪙 **${formattedAmount} ${token.symbol}** sent from ${
-        fromProfile?.name ?? shortenAddress(from)
-      } (@${fromProfile?.username ?? "anonymous"}) to ${
-        toProfile?.name ?? shortenAddress(to)
-      } (@${
-        toProfile?.username ?? "anonymous"
-      }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
-    }
-
     for (const liveUpdateChannel of liveUpdateChannels) {
+      const privateProfiles = liveUpdateChannel.privateProfiles;
+      let content = "";
+      if (txType === "mint") {
+        content = `
+        🔨 **${formattedAmount} ${token.symbol}** minted to ${
+          privateProfiles
+            ? shortenAddress(to)
+            : toProfile?.name ?? shortenAddress(to)
+        } (@${
+          privateProfiles
+            ? shortenAddress(to)
+            : toProfile?.username ?? "anonymous"
+        }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
+      } else if (txType === "burn") {
+        content = `
+        🔥 **${formattedAmount} ${token.symbol}** burned by ${
+          privateProfiles
+            ? shortenAddress(from)
+            : fromProfile?.name ?? shortenAddress(from)
+        } (@${
+          privateProfiles
+            ? shortenAddress(from)
+            : fromProfile?.username ?? "anonymous"
+        }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
+      } else {
+        content = `
+        🪙 **${formattedAmount} ${token.symbol}** sent from ${
+          privateProfiles
+            ? shortenAddress(from)
+            : fromProfile?.name ?? shortenAddress(from)
+        } (@${fromProfile?.username ?? "anonymous"}) to ${
+          privateProfiles
+            ? shortenAddress(to)
+            : toProfile?.name ?? shortenAddress(to)
+        } (@${
+          privateProfiles
+            ? shortenAddress(to)
+            : toProfile?.username ?? "anonymous"
+        }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
+      }
+
       let contentWithDescription = `${content}`;
       if (extraData && extraData.description) {
         contentWithDescription += !!liveUpdateChannel.privateDescriptions
