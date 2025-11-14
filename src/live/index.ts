@@ -108,9 +108,7 @@ const createEventDataHandler = (
             ? shortenAddress(to)
             : toProfile?.name ?? shortenAddress(to)
         } (@${
-          privateProfiles
-            ? shortenAddress(to)
-            : toProfile?.username ?? "anonymous"
+          privateProfiles ? "anonymous" : toProfile?.username ?? "anonymous"
         }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
       } else if (txType === "burn") {
         content = `
@@ -119,9 +117,7 @@ const createEventDataHandler = (
             ? shortenAddress(from)
             : fromProfile?.name ?? shortenAddress(from)
         } (@${
-          privateProfiles
-            ? shortenAddress(from)
-            : fromProfile?.username ?? "anonymous"
+          privateProfiles ? "anonymous" : fromProfile?.username ?? "anonymous"
         }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
       } else {
         content = `
@@ -129,14 +125,14 @@ const createEventDataHandler = (
           privateProfiles
             ? shortenAddress(from)
             : fromProfile?.name ?? shortenAddress(from)
-        } (@${fromProfile?.username ?? "anonymous"}) to ${
+        } (@${
+          privateProfiles ? "anonymous" : fromProfile?.username ?? "anonymous"
+        }) to ${
           privateProfiles
             ? shortenAddress(to)
             : toProfile?.name ?? shortenAddress(to)
         } (@${
-          privateProfiles
-            ? shortenAddress(to)
-            : toProfile?.username ?? "anonymous"
+          privateProfiles ? "anonymous" : toProfile?.username ?? "anonymous"
         }) ([View Transaction](${explorerBaseUrl}/tx/${hash}))`;
       }
 

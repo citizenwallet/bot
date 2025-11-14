@@ -1,5 +1,4 @@
 node_modules/
-.env
 dist/ 
 
 tx-channel-id
@@ -9,3 +8,4 @@ tx-channel-id
 .bot/
 
 coverage/
+config.bat
