@@ -143,6 +143,7 @@ export interface LiveUpdateChannel {
   channelId: string;
   alias: string;
   project?: string;
+  privateProfiles?: boolean;
   privateDescriptions?: boolean;
 }
 
