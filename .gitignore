@@ -8,4 +8,4 @@ tx-channel-id
 .bot/
 
 coverage/
-config.bat
+.env
